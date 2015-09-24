@@ -1,0 +1,215 @@
+
+    body {
+	background-color:white;
+	margin-right: 0;
+	margin-left: 0;
+	margin-top: 0;
+        margin-bottom: 0;
+	text-align: justify;
+        font-family: Calibri, Arial, Helvetica, sans-serif;
+    }
+    
+    
+    
+    img       { vertical-align:middle;margin:0.2em;}
+    .no_link  { color:#DDDDDD; }
+    
+    .my_name  { font-weight:bold; }  /* old: for publication */
+    .journal  { font-style:italic; } /* old: for publication */
+    
+    .pubMyName  { font-weight:bold;}  /* for publication */
+    .pubTitle   { font-weight:bold; color:#104D00; } /* not used anymore, new: title as link a.linkPubTitle */
+    .pubJournal { font-style:italic; } 
+    
+    .code     { font-family: Consolas, Monaco, "Courier New", Courier, monospace; padding:10px; }  /* in text: <span class="code">k</span> */
+    
+    a         { text-decoration:none; }
+    a:link    { text-decoration:none; }
+    a:visited { text-decoration:none; }
+    a:hover   { text-decoration:underline; }
+    a:active  { text-decoration:underline; }
+    a:focus   { text-decoration:underline; }
+    
+    a.linkBlack         { text-decoration:none; color:black;} 
+    a.linkBlack:link    { text-decoration:none; color:black; }
+    a.linkBlack:visited { text-decoration:none; color:black;}
+    a.linkBlack:active  { text-decoration:underline; color:black;}
+    a.linkBlack:hover   { text-decoration:underline; color:black;}
+    a.linkBlack:focus   { text-decoration:underline; color:black;}
+
+    a.linkGray         { text-decoration:none; color:#666666;}   /* "Matthias Scholz" below a page */
+    a.linkGray:link    { text-decoration:none; color:#666666; }
+    a.linkGray:visited { text-decoration:none; color:#666666;}
+    a.linkGray:active  { text-decoration:underline; color:#666666;}
+    a.linkGray:hover   { text-decoration:underline; color:#000000;}
+    a.linkGray:focus   { text-decoration:underline; color:#000000;}
+    
+    a.linkGraySmall         { text-decoration:none; font-size:small; }  /* fig caption */
+    a.linkGraySmall:link    { text-decoration:none; color:#666666; font-size:small; }
+    a.linkGraySmall:visited { text-decoration:none; color:#666666; font-size:small; }
+    a.linkGraySmall:active  { text-decoration:underline; color:#666666; font-size:small; }
+    a.linkGraySmall:hover   { text-decoration:underline; color:#000000; font-size:small; }
+    a.linkGraySmall:focus   { text-decoration:underline; color:#000000; font-size:small; }  
+    
+    a.linkPubTitle         { text-decoration:none;       color:blue;}  /* for using the publication title as link */
+    a.linkPubTitle:link    { text-decoration:none;       color:blue;}  /* font-weight:bold; ?? */
+    a.linkPubTitle:visited { text-decoration:none;       color:blue;}
+    a.linkPubTitle:active  { text-decoration:underline;  color:blue;}
+    a.linkPubTitle:hover   { text-decoration:underline;  color:blue;}
+    a.linkPubTitle:focus   { text-decoration:underline;  color:blue;}  
+    
+    a.linkImageBorder         { text-decoration:none; }  /* border colors of image */
+    a.linkImageBorder:link    { text-decoration:none; color:white; }
+    a.linkImageBorder:visited { text-decoration:none; color:white; }
+    a.linkImageBorder:active  { text-decoration:underline; color:#aaaaaa; }
+    a.linkImageBorder:hover   { text-decoration:underline; color:#aaaaaa; }
+    a.linkImageBorder:focus   { text-decoration:underline; color:#aaaaaa; }     
+
+    
+    div.pageStyle {
+        margin-right: 2em;
+	margin-left: 2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+    }
+    
+    .indent {
+	margin-left: 1em; /* Außenabstand links*/
+	margin-right: 2em;
+    }
+    
+    .imageNO { /* image in upper right corner */
+        float: right; /* image is right, other elements flow around */
+        margin-right: 0em; /* already given by .pageStyle */
+        margin-left: 2em;  /* magin between text and image */
+        color:#000000;
+    }  
+
+    .imageNW { /* image in upper left corner */
+        float: left; /* image is left, other elements flow around */
+        margin-right: 2em; /* already given by .pageStyle */
+        margin-left: 0em;  /* magin between text and image */
+        color:#000000;
+    }  
+
+    .yellowBoxNO { /* image in upper left corner */
+	max-width: 20em;
+        float: right; /* box is right, other elements flow around */
+        margin-right: 0em; /* already given by .pageStyle */
+        margin-left: 2em;  /* magin between text and image */
+	margin-bottom: 1em; 
+	border:     1px solid #aaaaaa;
+        background-color:#f2f2f2;   /* #eeeeee; #DFDBFF #F2FF94; #E9FF4C; */
+	padding-top: 0em;
+	padding-bottom: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+    }  
+
+    .yellowBoxNW { /* image in upper left corner */
+	max-width: 20em;
+        float: left; /* box is left, other elements flow around */
+        margin-right: 2em; /* magin between box and text */
+        margin-left: 0em;  /* already given by .pageStyle */
+	margin-bottom: 1em; 
+	border:     1px solid #aaaaaa;
+        background-color:#f2f2f2;   /* #eeeeee; #DFDBFF #F2FF94; #E9FF4C; */
+	padding-top: 0em;
+	padding-bottom: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+    }  
+
+    div.pageEnd { /* page ending */
+        margin-right: 0;
+	margin-left: 0;
+	margin-top: 2em;
+	margin-bottom: 0;
+	border-top:  1px solid #aaaaaa; /* top line */
+        background-color: #e2e2e2;   /* same as "yellow box" */
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	padding-left: 1.5em;
+	padding-right: 1.5em;
+    }  
+    
+    
+    pre {   /* matlab code */
+        font-family: Consolas, Monaco, "Courier New", Courier, monospace;
+	background: #f6f6f6;
+	border:     1px solid #dadada;
+	padding:    10px;
+	font-size:  smaller;
+	line-height: 1.3em;
+	overflow: auto;
+	margin-left: 2em; /* Außenabstand links, little stronger than in .indent*/
+	margin-right: 4em;
+    }
+    
+    
+    /* lists */
+    ul {
+       list-style-type: square;  /* square bullets in general */
+    }
+    .bullet {list-style-type: square; color:#aaaaaa}  /* square bullets in gray and text in normal black */
+    .textcolor {color:black}  
+    
+    
+    /* top horizontal header line */
+    .headerLine{  
+      padding-top: 0px;
+      padding-bottom: 4px;
+      font-size:18px;
+      margin-top: 0em;
+      margin-bottom: 1em;
+      padding-left: 1.5em;
+      padding-right: 1.5em;
+      border-bottom:  1px solid #aaaaaa;
+      background-color: #e2e2e2;
+      height: 27px;
+    }
+    .text_box {
+	padding-top: 4px;
+	padding-bottom: 4px;
+	float: left;
+	border: 0px;
+        }
+    .arrow_box {
+	float: left;
+	position: relative;
+	background: #e2e2e2;
+	border: 0px;
+	height:27px;  /* related to height of header line*/ 
+        width:20px; /* distance to text */
+        }
+    .arrow_box:after, .arrow_box:before {
+	left: 40%; /* move box in text distance (foreward/backward) */
+	border: solid transparent;
+	content: " ";
+	height: 0; width: 0;
+	position: absolute;
+	pointer-events: none;
+	}
+    .arrow_box:after {
+	border-color: rgba(226, 226, 226, 0);
+	border-left-color: #e2e2e2; /* inner arrow color */
+	top: 2px;
+	/* top: 50%;  margin-top: -13px; */
+	border-left-width: 7px;
+	border-top-width: 14px;
+	border-bottom-width: 14px;
+        }
+    .arrow_box:before {
+	border-color: rgba(102, 102, 102, 0); /* transparency of chosen color below */
+	border-left-color: #666666; /* text color */
+	border-width: 20px;
+	top: 0;
+	/* top: 50%; margin-top: -15px; */
+	border-left-width: 8px;
+	border-top-width: 16px;
+	border-bottom-width: 16px;
+        }
+
+
+
+  

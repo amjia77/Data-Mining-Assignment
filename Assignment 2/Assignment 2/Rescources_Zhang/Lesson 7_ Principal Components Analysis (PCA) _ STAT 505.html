@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0053)https://onlinecourses.science.psu.edu/stat505/node/49 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr" class="js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>Lesson 7: Principal Components Analysis (PCA) | STAT 505</title>
+    
+<link rel="next" href="https://onlinecourses.science.psu.edu/stat505/node/51">
+<link rel="shortcut icon" href="https://onlinecourses.science.psu.edu/stat505/sites/onlinecourses.science.psu.edu.stat505/files/online_ed2_favicon.ico" type="image/x-icon">
+    <link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/book.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/node.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/defaults.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/system.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/system-menus.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/user.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/content-module.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/hovertip.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/thickbox.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/thickbox_ie.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/extlink.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/fieldgroup.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/printlinks.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/default.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/layout.css">
+<link type="text/css" rel="stylesheet" media="all" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/style.css">
+<link type="text/css" rel="stylesheet" media="screen" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/proto_icons.css">
+<link type="text/css" rel="stylesheet" media="screen" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/tabs.css">
+<link type="text/css" rel="stylesheet" media="print" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/print.css">
+    <!--[if lte IE 6]><link type="text/css" rel="stylesheet" media="all" href="/stat505/sites/all/themes/online_ed2/css/ie6.css" /><![endif]-->
+    <!--[if IE 7]><link type="text/css" rel="stylesheet" media="all" href="/stat505/sites/all/themes/online_ed2/css/ie7.css" /><![endif]-->
+    <!--[if IE 8]><link type="text/css" rel="stylesheet" media="all" href="/stat505/sites/all/themes/online_ed2/css/ie8.css" /><![endif]-->
+    <link rel="stylesheet" href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/tabcontent.css" type="text/css">
+    <script type="text/javascript" async="" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/ga.js"></script><script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/jquery.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/drupal.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/googleanalytics.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/hovertip.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/mathjax.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/thickbox.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/extlink.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/jquery.a_form.packed.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/ajax.js"></script>
+<script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/ajax_thickbox.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, { "basePath": "/stat505/", "googleanalytics": { "trackOutgoing": 1, "trackMailto": 1, "trackDownload": 1, "trackDownloadExtensions": "7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip" }, "mathjax": { "path": "cdn" }, "thickbox": { "close": "Close", "next": "Next \x3e", "prev": "\x3c Prev", "esc_key": "or Esc Key", "next_close": "Next / Close on last", "image_count": "Image !current of !total" }, "extlink": { "extTarget": "_blank", "extClass": "ext", "extSubdomains": 1, "extExclude": "", "extInclude": "(statprogram)", "extAlert": 0, "extAlertText": "This link will take you to an external web site. We are not responsible for their content.", "mailtoClass": "mailto" } });
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+
+    // initialize tooltips in a separate thread
+    $(document).ready(function() {
+      window.setTimeout(hovertipInit, 1);
+    });
+
+//--><!]]>
+</script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+        $('iframe').each(function(){
+          var url = $(this).attr("src");
+          var char = "?";
+          if(url.indexOf("?") != -1){
+            var char = "&";
+          }
+        $(this).attr("src",url+char+"wmode=transparent");
+        });
+    });
+    </script>
+<link href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/video-js.css" rel="stylesheet">
+<script src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/video.js"></script>
+  <script type="text/javascript" src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/mathjax(1).js">MathJax.Hub.Config({extensions: ["tex2jax.js", "TeX/AMSmath.js"],jax: ["input/TeX","output/HTML-CSS"],tex2jax: {inlineMath: [ ['$','$'], ['\\(','\\)'] ],displayMath: [ ['$$','$$'], ['\\[','\\]'] ],processEscapes: true}});MathJax.Hub.Startup.onload();</script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">.MathJax_Preview .MJXc-math {color: inherit!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXc-script {font-size: .8em}
+.MJXc-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXc-bold {font-weight: bold}
+.MJXc-italic {font-style: italic}
+.MJXc-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-largeop {font-size: 150%}
+.MJXc-largeop.MJXc-int {vertical-align: -.2em}
+.MJXc-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXc-display {display: block; text-align: center; margin: 1em 0}
+.MJXc-math span {display: inline-block}
+.MJXc-box {display: block!important; text-align: center}
+.MJXc-box:after {content: " "}
+.MJXc-rule {display: block!important; margin-top: .1em}
+.MJXc-char {display: block!important}
+.MJXc-mo {margin: 0 .15em}
+.MJXc-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXc-denom {display: inline-table!important; width: 100%}
+.MJXc-denom > * {display: table-row!important}
+.MJXc-surd {vertical-align: top}
+.MJXc-surd > * {display: block!important}
+.MJXc-script-box > *  {display: table!important; height: 50%}
+.MJXc-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXc-script-box > *:last-child > * {vertical-align: bottom}
+.MJXc-script-box > * > * > * {display: block!important}
+.MJXc-mphantom {visibility: hidden}
+.MJXc-munderover {display: inline-table!important}
+.MJXc-over {display: inline-block!important; text-align: center}
+.MJXc-over > * {display: block!important}
+.MJXc-munderover > * {display: table-row!important}
+.MJXc-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXc-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXc-mtr {display: table-row!important}
+.MJXc-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXc-mtr > .MJXc-mtd:first-child {padding-left: 0}
+.MJXc-mtr:first-child > .MJXc-mtd {padding-top: 0}
+.MJXc-mlabeledtr {display: table-row!important}
+.MJXc-mlabeledtr > .MJXc-mtd:first-child {padding-left: 0}
+.MJXc-mlabeledtr:first-child > .MJXc-mtd {padding-top: 0}
+.MJXc-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXc-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXc-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXc-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXc-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXc-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXc-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXc-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXc-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXc-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXc-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_CHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+  <body class="not-front not-logged-in page-node node-type-book one-sidebar sidebar-left page-node-49 section-node"><div id="MathJax_Message" style="display: none;"></div>
+    <div id="skip">
+      <a href="https://onlinecourses.science.psu.edu/stat505/node/49#content">Skip to Content</a>
+          </div>
+
+<div id="page" class="stat">
+    <!-- ______________________ HEADER _______________________ -->
+
+<div id="header">
+
+<div id="logo-title">
+
+<div id="logo-logo">
+  <a href="http://science.psu.edu/" title="Eberly College of Science" rel="home" id="logo">Eberly College of Science</a>
+</div>
+
+  <div id="site-name">
+    <a href="https://onlinecourses.science.psu.edu/stat505/" title="Home" rel="home"><span>STAT 505</span></a>
+  </div>
+
+  <div id="site-slogan"><span>Applied Multivariate Statistical Analysis</span></div>
+
+
+</div> <!-- /logo-title -->
+
+            
+    </div> <!-- /header -->
+
+    <!-- ______________________ MAIN _______________________ -->
+
+    <div id="main" class="clearfix">
+
+      <div id="content">
+        <div id="content-inner" class="inner column center">
+
+          
+                      <div id="content-header">
+
+              <div class="breadcrumb"><a href="https://onlinecourses.science.psu.edu/stat505/">Home</a></div>
+                              <h1 class="title">Lesson 7: Principal Components Analysis (PCA)</h1>
+              
+              
+              
+              
+              
+            </div> <!-- /#content-header -->
+          
+          <div id="content-area">
+            <div class="node node clearfix node-type-book" id="node-49">
+  <div class="node-inner">
+
+    
+    
+    
+    <div class="content">
+      <span class="print-link"><span class="print_html"><a href="https://onlinecourses.science.psu.edu/stat505/print/book/export/html/49" title="Display a printer-friendly version of this page." class="print-page" onclick="window.open(this.href); return false" rel="nofollow"><img src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/print_icon.gif" alt="Printer-friendly version" title="Printer-friendly version" width="16" height="16" class="print-icon print-icon-margin">Printer-friendly version</a></span></span><h3>Introduction</h3>
+<p>Sometimes data are collected on a large number of variables from a single population. As an example&nbsp;consider the Places Rated dataset below</p>
+<h4>Example: Places Rated</h4>
+<p>In the Places Rated Almanac, Boyer and Savageau rated 329 communities according to the following nine criteria:</p>
+<ol>
+<li>Climate and Terrain </li>
+<li>Housing </li>
+<li>Health Care &amp; the Environment</li>
+<li>Crime </li>
+<li>Transportation </li>
+<li>Education</li>
+<li>The Arts</li>
+<li>Recreation </li>
+<li>Economics</li>
+</ol>
+<p>Note that within the dataset, except for housing and crime, the higher the score the better. For housing and crime, the lower the score the better. Where some communities might do better in the arts, other communities might be rated better in other areas such as having a lower crime rate and good educational opportunities.</p>
+<h4>Objective</h4>
+<p>With a large number of variables, the dispersion matrix may be too large to study and interpret properly. There would&nbsp;be too many&nbsp;pairwise correlations between the variables to consider. Graphical display of data may also not be of particular help incase the data set is very large. With 12 variables, for example, there will be more than 200 three-dimensional scatterplots to be studied!</p>
+<p>To interpret the data in a more meaningful form, it is therefore necessary to reduce the number of variables&nbsp;to a few, interpretable linear combinations of the data. Each linear combination will correspond to a principal component.</p>
+<p>(There is another very useful data reduction technique called Factor Analysis, which will be taken up in a subsequent lesson.)</p>
+<h3>Learning objectives &amp; outcomes</h3>
+<p>Upon completion of this lesson, you should be able to do the following:</p>
+<ul>
+<li>Carry out a principal components analysis using SAS and Minitab</li>
+<li>Assess how many principal components should be considered in an analysis; </li>
+<li>Interpret principal component scores. Be able to describe a subject with a high or low score;</li>
+<li>Determine when a principal component analysis may be based on the variance-covariance matrix, and when the correlation matrix should be used;</li>
+<li>Understand how principal component scores may be used in further analyses.</li>
+</ul>
+  <div id="book-navigation-49" class="book-navigation">
+    <ul class="menu"><li class="leaf first id7-1_-_principal_component_analysis_-pca-_procedure"><a href="https://onlinecourses.science.psu.edu/stat505/node/51">7.1 - Principal Component Analysis (PCA) Procedure</a></li>
+<li class="leaf id7-2_-_how_do_we_find_the_coefficients-"><a href="https://onlinecourses.science.psu.edu/stat505/node/52">7.2 - How do we find the coefficients?</a></li>
+<li class="leaf id7-3_-_example-_places_rated_"><a href="https://onlinecourses.science.psu.edu/stat505/node/53">7.3 - Example: Places Rated </a></li>
+<li class="leaf id7-4_-_interpretation_of_the_principal_components"><a href="https://onlinecourses.science.psu.edu/stat505/node/54">7.4 - Interpretation of the Principal Components</a></li>
+<li class="leaf id7-5_-_alternative-_standardize_the_variables"><a href="https://onlinecourses.science.psu.edu/stat505/node/55">7.5 - Alternative: Standardize the Variables</a></li>
+<li class="leaf id7-6_-_example-_places_rated_after_standardization"><a href="https://onlinecourses.science.psu.edu/stat505/node/56">7.6 - Example: Places Rated after Standardization</a></li>
+<li class="leaf id7-7_-_once_the_components_have_been_calculated"><a href="https://onlinecourses.science.psu.edu/stat505/node/57">7.7 - Once the Components Have Been Calculated</a></li>
+<li class="leaf last id7-8_-_summary"><a href="https://onlinecourses.science.psu.edu/stat505/node/58">7.8 - Summary</a></li>
+</ul>
+        <div class="page-links clear-block">
+                          <a href="https://onlinecourses.science.psu.edu/stat505/node/51" class="page-next" title="Go to next page">7.1 - Principal Component Analysis (PCA) Procedure ›</a>
+          </div>
+    
+  </div>
+    </div>
+
+    
+     
+      <div class="links"> <ul class="links inline"><li class="book_printer first last"><a href="https://onlinecourses.science.psu.edu/stat505/print/book/export/html/49" title="Display a printer-friendly version of this page." class="print-page" onclick="window.open(this.href); return false" rel="nofollow"><img src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/print_icon.gif" alt="Printer-friendly version" title="Printer-friendly version" width="16" height="16" class="print-icon print-icon-margin">Printer-friendly version</a></li>
+</ul></div>
+    
+  </div> <!-- /node-inner -->
+</div> <!-- /node-->          </div> <!-- /#content-area -->
+
+          
+          
+          </div>
+        </div> <!-- /content-inner /content -->
+
+        
+                  <div id="sidebar-first" class="column sidebar first">
+            <div id="sidebar-first-inner" class="inner">
+              <h1 id="menu_title">Navigation</h1>
+              <div id="block-user-1" class="block block-user block-left block-id-30 clearfix first odd">
+  <div class="block-inner">
+
+          <h3 class="title block-title">Start Here!</h3>
+    
+    <div class="content">
+      <ul class="menu"><li class="collapsed first welcome_to_stat_505-"><a href="https://onlinecourses.science.psu.edu/stat505/node/1" title="Welcome to STAT 505!">Welcome to STAT 505!</a></li>
+<li class="collapsed last faculty_login_-psu_access_account-"><a href="https://onlinecourses.science.psu.edu/stat505/login" title="">Faculty login (PSU Access Account)</a></li>
+</ul>    </div>
+
+    
+  </div> <!-- /block-inner -->
+</div> <!-- /block --><div id="block-menu-menu-lessons" class="block block-menu block-left block-id-22 clearfix even">
+  <div class="block-inner">
+
+          <h3 class="title block-title">Lessons</h3>
+    
+    <div class="content">
+      <ul class="menu"><li class="collapsed first lesson_0-_matrices_and_vectors"><a href="https://onlinecourses.science.psu.edu/stat505/node/2" title="Lesson 0: Matrix Review">Lesson 0: Matrices and Vectors</a></li>
+<li class="collapsed lesson_1-_measures_of_central_tendency-_dispersion_and_association"><a href="https://onlinecourses.science.psu.edu/stat505/node/10" title="Measures of Central Tendency, Variance and Association">Lesson 1: Measures of Central Tendency, Dispersion and Association</a></li>
+<li class="collapsed lesson_2-_linear_combinations_of_random_variables"><a href="https://onlinecourses.science.psu.edu/stat505/node/11" title="Linear Combination of Random Variables">Lesson 2: Linear Combinations of Random Variables</a></li>
+<li class="collapsed lesson_3-_graphical_display_of_multivariate_data"><a href="https://onlinecourses.science.psu.edu/stat505/node/9" title="Graphical Display of Multivariate Data">Lesson 3: Graphical Display of Multivariate Data</a></li>
+<li class="collapsed lesson_4-_multivariate_normal_distribution"><a href="https://onlinecourses.science.psu.edu/stat505/node/12" title="Multivariate Normal Distribution">Lesson 4: Multivariate Normal Distribution</a></li>
+<li class="collapsed lesson_5-_sample_mean_vector_and_sample_correlation_and_related_inference_problems"><a href="https://onlinecourses.science.psu.edu/stat505/node/13" title="Properties of Sample Mean and Correlation">Lesson 5: Sample Mean Vector and Sample Correlation and Related Inference Problems</a></li>
+<li class="collapsed lesson_6-_multivariate_conditional_distribution_and_partial_correlation"><a href="https://onlinecourses.science.psu.edu/stat505/node/14" title="Partial Correlations">Lesson 6: Multivariate Conditional Distribution and Partial Correlation</a></li>
+<li class="expanded active-trail lesson_7-_principal_components_analysis_-pca-"><a href="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/Lesson 7_ Principal Components Analysis (PCA) _ STAT 505.html" title="Lesson 7: Principal Components Analysis (PCA)" class="active">Lesson 7: Principal Components Analysis (PCA)</a><ul class="menu"><li class="leaf first id7-1_-_principal_component_analysis_-pca-_procedure"><a href="https://onlinecourses.science.psu.edu/stat505/node/51" title="Principal Component Analysis (PCA) Procedure">7.1 - Principal Component Analysis (PCA) Procedure</a></li>
+<li class="leaf id7-2_-_how_do_we_find_the_coefficients-"><a href="https://onlinecourses.science.psu.edu/stat505/node/52" title="How do we find the coefficients?">7.2 - How do we find the coefficients?</a></li>
+<li class="leaf id7-3_-_example-_places_rated"><a href="https://onlinecourses.science.psu.edu/stat505/node/53" title="Example: Places Rated">7.3 - Example: Places Rated</a></li>
+<li class="leaf id7-4_-_interpretation_of_the_principal_components"><a href="https://onlinecourses.science.psu.edu/stat505/node/54" title="Interpretation of the Principal Components">7.4 - Interpretation of the Principal Components</a></li>
+<li class="leaf id7-5_-_alternative-_standardize_the_variables"><a href="https://onlinecourses.science.psu.edu/stat505/node/55" title="Alternative: Standardize the Variables">7.5 - Alternative: Standardize the Variables</a></li>
+<li class="leaf id7-6_-_example-_places_rated_after_standardization"><a href="https://onlinecourses.science.psu.edu/stat505/node/56" title="Example: Places Rated Data">7.6 - Example: Places Rated after Standardization</a></li>
+<li class="leaf id7-7_-_once_the_components_have_been_calculated"><a href="https://onlinecourses.science.psu.edu/stat505/node/57" title="Once the Components Have Been Calculated">7.7 - Once the Components Have Been Calculated</a></li>
+<li class="leaf last id7-8_-_summary"><a href="https://onlinecourses.science.psu.edu/stat505/node/58" title="Summary">7.8 - Summary</a></li>
+</ul></li>
+<li class="collapsed lesson_8-_canonical_correlation_analysis"><a href="https://onlinecourses.science.psu.edu/stat505/node/63" title="Lesson 8: Canonical Correlation Analysis">Lesson 8: Canonical Correlation Analysis</a></li>
+<li class="collapsed lesson_9-_factor_analysis"><a href="https://onlinecourses.science.psu.edu/stat505/node/74" title="Lesson 9: Factor Analysis">Lesson 9: Factor Analysis</a></li>
+<li class="collapsed lesson_10-_discriminant_analysis"><a href="https://onlinecourses.science.psu.edu/stat505/node/89" title="Lesson 10: Discriminant Analysis">Lesson 10: Discriminant Analysis</a></li>
+<li class="collapsed lesson_11-_inferences_regarding_multivariate_population_mean"><a href="https://onlinecourses.science.psu.edu/stat505/node/100" title="Lesson 11: Inferences Regarding Multivariate Population Mean">Lesson 11: Inferences Regarding Multivariate Population Mean</a></li>
+<li class="collapsed lesson_12-__cluster_analysis"><a href="https://onlinecourses.science.psu.edu/stat505/node/138" title="Lesson 12:  Cluster Analysis">Lesson 12:  Cluster Analysis</a></li>
+<li class="collapsed lesson_13-_multivariate_analysis_of_variance_-manova-"><a href="https://onlinecourses.science.psu.edu/stat505/node/159" title="Lesson 13: Multivariate Analysis of Variance (MANOVA)">Lesson 13: Multivariate Analysis of Variance (MANOVA)</a></li>
+<li class="collapsed last lesson_14-_repeated_measures_analysis"><a href="https://onlinecourses.science.psu.edu/stat505/node/150" title="Lesson 14: Repeated Measures Analysis">Lesson 14: Repeated Measures Analysis</a></li>
+</ul>    </div>
+
+    
+  </div> <!-- /block-inner -->
+</div> <!-- /block --><div id="block-menu-menu-resources" class="block block-menu block-left block-id-23 clearfix last odd">
+  <div class="block-inner">
+
+          <h3 class="title block-title">Resources</h3>
+    
+    <div class="content">
+      <ul class="menu"><li class="leaf first sas_tour"><a href="https://onlinecourses.science.psu.edu/stat505/node/25" title="SAS Tour">SAS Tour</a></li>
+<li class="leaf sas_interactive_data_analysis"><a href="https://onlinecourses.science.psu.edu/stat505/node/26" title="SAS Interactive Data Analysis">SAS Interactive Data Analysis</a></li>
+<li class="leaf a_quick_introduction_to_minitab"><a href="https://onlinecourses.science.psu.edu/stat505/node/60" title="A Quick Introduction to Minitab">A Quick Introduction to Minitab</a></li>
+<li class="leaf last sas_programs"><a href="https://onlinecourses.science.psu.edu/stat505/node/175" title="SAS Programs">SAS Programs</a></li>
+</ul>    </div>
+
+    
+  </div> <!-- /block-inner -->
+</div> <!-- /block -->              <div id="sciencemark">
+                <a href="http://science.psu.edu/" title="Penn State Science">
+                  <img src="./Lesson 7_ Principal Components Analysis (PCA) _ STAT 505_files/pennstatescience250.png" alt="Penn State Science">
+                </a>
+              </div>
+            </div>
+          </div>
+         <!-- /sidebar-left -->
+
+         <!-- /sidebar-second -->
+
+      </div> <!-- /main -->
+
+      <!-- ______________________ FOOTER _______________________ -->
+
+        <div id="footer">
+
+          <p>Copyright © 2015 <a href="http://www.psu.edu/" class="ext" target="_blank">The Pennsylvania State University</a><span class="ext"></span><br>
+          <a href="http://www.psu.edu/ur/legal.html" class="ext" target="_blank">Privacy and Legal Statements</a><span class="ext"></span><br>
+          Contact the <a href="mailto:gfj100@psu.edu" class="mailto">Department of Statistics Online Programs</a><span class="mailto"></span>
+          </p>
+
+                            </div> <!-- /footer -->
+
+    </div> <!-- /page -->
+    <script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var _gaq = _gaq || [];_gaq.push(["_setAccount", "UA-26036941-1"]);_gaq.push(["_trackPageview"]);(function() {var ga = document.createElement("script");ga.type = "text/javascript";ga.async = true;ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(ga, s);})();
+//--><!]]>
+</script>
+  
+
+</body></html>

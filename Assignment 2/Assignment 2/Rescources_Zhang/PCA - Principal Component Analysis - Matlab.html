@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0065)http://www.nlpca.org/pca-principal-component-analysis-matlab.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>PCA - Principal Component Analysis - Matlab</title>
+  <meta name="author" content="Matthias Scholz">
+  <meta name="description" content="Matlab: How to apply principal component analysis (PCA) to high-dimensional gene expression data.">
+  <meta name="keywords" content="PCA, principal component analysis, bioinformatics, gene expression, PPCA">
+  
+  <link rel="stylesheet" href="./PCA - Principal Component Analysis - Matlab_files/style.css" type="text/css" media="all">
+</head>
+
+<body>
+<div class="pageStyle">  
+ 
+
+<div style="max-width: 70em;">
+  <div class="imageNO" style="max-width: 70em;">
+     <a class="linkImageBorder" href="http://www.nlpca.org/pca_principal_component_analysis.html">
+     <img src="./PCA - Principal Component Analysis - Matlab_files/fig-pca-principal-component-analysis-s.png" border="1" width="340" height="160" alt="PCA - Principal Component Analysis" title="PCA - Principal Component Analysis">
+     </a>
+     <p style="text-align:right; margin-top:0; margin-bottom:1em">
+     <a class="linkGraySmall" href="http://www.nlpca.org/pca_principal_component_analysis.html">Principal Component Analysis</a>
+    </p>
+  </div>
+</div>
+
+<h1>Principal component analysis in&nbsp;Matlab</h1>
+
+<p class="indent">
+In Matlab, principal component analysis (PCA) is part of the Statistics Toolbox, see <a href="http://www.mathworks.com/help/toolbox/stats/pcacov.html">pcacov</a> and
+<a href="http://www.mathworks.com/help/toolbox/stats/princomp.html">princomp</a>. Princomp can be used in the following way:
+</p>
+<pre>    data=rand(100,10);  % artificial data set of 100 variables (genes) and 10 samples
+    [W, pc] = princomp(data'); pc=pc'; W=W';
+    plot(pc(1,:),pc(2,:),'.'); 
+    title('{\bf PCA} by princomp'); xlabel('PC 1'); ylabel('PC 2')
+</pre>
+<br>
+<p class="indent">
+But you also can perform PCA by yourself, using <code>eig</code> and <code>cov</code> to calculate the eigenvectors of the covariance matrix:
+</p>
+<pre>% consider an artificial data set of 100 variables (e.g., genes) and 10 samples
+    data=rand(100,10);
+
+% remove the mean variable-wise (row-wise)
+    data=data-repmat(mean(data,2),1,size(data,2));
+
+% calculate eigenvectors (loadings) W, and eigenvalues of the covariance matrix
+    [W, EvalueMatrix] = eig(cov(data'));
+    Evalues = diag(EvalueMatrix);
+
+% order by largest eigenvalue
+    Evalues = Evalues(end:-1:1);
+    W = W(:,end:-1:1); W=W';  
+
+% generate PCA component space (PCA scores)
+    pc = W * data;
+
+% plot PCA space of the first two PCs: PC1 and PC2
+    plot(pc(1,:),pc(2,:),'.')  
+</pre>
+<p class="indent">
+Note, that this procedure cannot be used when you have extreme high-dimensional data, because of an extreme large variable-times-variable covariance matrix.
+</p>
+<br><br>
+
+<a name="ppca"></a>
+<h3>How to apply PCA to more than 20.000 variables (genes)?</h3>
+
+<p class="indent">
+Classical PCA algorithms are limited when applied to extreme high-dimensional dataset, e.g., to gene expression data in Bioinformatics approaches.
+But often we only need the first two or three principal components to visualize the data. For extracting only the first <code>k</code> components
+we can use <i>probabilistic PCA</i> (PPCA) [Verbeek 2002]
+based on <i>sensible principal components analysis</i> [<a href="http://cs.nyu.edu/~roweis/publications.html#nipsempca">S.&nbsp;Roweis&nbsp;1997</a>],
+e.g, by using this modified <a href="http://www.nlpca.org/ppca.m">PCA matlab script (ppca.m)</a>,
+originally by <a href="http://lear.inrialpes.fr/~verbeek/software.php">Jakob Verbeek</a>. It also is applicable to incomplete data sets (missing data).
+</p>
+
+<pre>    data=rand(100,10); % artificial data set of 100 variables (e.g., genes) and 10 samples
+    
+    [pc,W,data_mean,xr,evals,percentVar] = ppca(data,3);  % download: <a href="http://www.nlpca.org/ppca.m">ppca.m</a>
+    
+    plot(pc(1,:),pc(2,:),'.');
+      title('{\bf PCA}');
+      xlabel(['PC 1 (',num2str(round(percentVar(1)*10)/10),'%)',]);
+      ylabel(['PC 2 (',num2str(round(percentVar(2)*10)/10),'%)',]);
+</pre>
+
+<p class="indent">
+Update: A new <a href="http://users.ics.aalto.fi/alexilin/software/">Matlab package</a> by Alexander Ilin
+includes a collection of several algorithms of PCA to use on high-dimensional data including missing data 
+<a href="http://jmlr.csail.mit.edu/papers/volume11/ilin10a/ilin10a.pdf">(Ilin and Raiko, 2010)</a>.
+
+<br><br>  
+<b>GNU R:</b> For <i>probabilistic PCA</i> (PPCA) using GNU R, see the Bioconductor package
+<a href="http://www.bioconductor.org/help/bioc-views/release/bioc/html/pcaMethods.html">pcaMethods</a>,
+also published in Bioinformatics by <a href="http://dx.doi.org/10.1093/bioinformatics/btm069">W.&nbsp;Stacklies et al. (pdf)</a>
+</p>
+
+<br><br>
+
+
+<h4>See also:</h4>
+<ul class="bullet">
+<li><span class="textcolor"><a href="http://www.nlpca.org/pca_principal_component_analysis.html">Principal Component Analysis (PCA)</a></span></li>
+<li><span class="textcolor"><a href="http://www.nlpca.org/ica_independent_component_analysis.html">Independent Component Analysis (ICA)</a></span></li>
+<li><span class="textcolor"><a href="http://www.nlpca.org/">Nonlinear PCA (NLPCA) by using auto-associative neural networks</a></span></li>
+<li><span class="textcolor"><a href="http://www.network-science.org/">Network Analysis (Complex network science)</a></span></li>
+</ul>
+
+
+  <div style="float: right;"><p style="text-align:center; margin:10px;">
+   <a class="linkIcon" href="http://www.art-t-shirts.gancho.me/funny-gift-ideas-party.html">
+   <img src="./PCA - Principal Component Analysis - Matlab_files/i-wine.png" border="0" width="130" height="130" alt="Wine surfing party" title="Wine surfing party"></a><br>
+   <a class="linkColor" href="http://www.art-t-shirts.gancho.me/funny-gift-ideas-party.html">Wine surfing</a></p></div>
+  <div style="float: right;"><p style="text-align:center; margin:10px;">
+   <a class="linkIcon" href="http://www.art-t-shirts.gancho.me/spritz-aperol-drink-happy-hour-italy.html">
+   <img src="./PCA - Principal Component Analysis - Matlab_files/i-spritz.png" border="0" width="130" height="130" alt="Spritz t-shirts" title="Spritz t-shirts"></a><br>
+   <a class="linkColor" href="http://www.art.shop.gancho.me/stEN-spritz-aperol-Venice-Italy-cocktail-aperitif-t-shirt-sleeve-tote-bag.html">Spritz</a></p></div>
+  <div style="float: right;"><p style="text-align:center; margin:10px;">
+   <a class="linkIcon" href="http://www.art-t-shirts.gancho.me/munich-octoberfest-beer-party-t-shirts.html">
+   <img src="./PCA - Principal Component Analysis - Matlab_files/i-oktoberfest.png" border="0" width="130" height="130" alt="Munich Octoberfest" title="Munich Octoberfest"></a><br>
+   <a class="linkColor" href="http://www.art-t-shirts.gancho.me/munich-octoberfest-beer-party-t-shirts.html">Oktoberfest</a></p></div>
+  <div style="clear:both;"></div>
+
+
+</div> <!-- end of inner .pageStyle  -->
+  
+ <div class="pageEnd">
+   <div style="float: right; margin-left: 3em;">
+     <a class="linkGray" href="http://www.matthias-scholz.de/">Matthias Scholz</a>
+   </div>
+   <a class="linkGray" href="http://www.nlpca.org/pca_principal_component_analysis.html">Principal Component Analysis</a>
+ </div>
+
+
+
+</body></html>

@@ -1,0 +1,3240 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html -->
+<html class="v2" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="width=1100" name="viewport">
+
+<script src="./Data Mining in MATLAB_ Principal Components Analysis_files/cb=gapi.loaded_3" async=""></script><script src="./Data Mining in MATLAB_ Principal Components Analysis_files/cb=gapi.loaded_2" async=""></script><script src="./Data Mining in MATLAB_ Principal Components Analysis_files/cb=gapi.loaded_1" async=""></script><script src="./Data Mining in MATLAB_ Principal Components Analysis_files/cb=gapi.loaded_0" async=""></script><script type="text/javascript">(function() { (function(){function c(a){this.t={};this.tick=function(a,c,b){var d=void 0!=b?b:(new Date).getTime();this.t[a]=[d,c];if(void 0==b)try{window.console.timeStamp("CSI/"+a)}catch(e){}};this.tick("start",null,a)}var a;window.performance&&(a=window.performance.timing);var h=a?new c(a.responseStart):new c;window.jstiming={Timer:c,load:h};if(a){var b=a.navigationStart,e=a.responseStart;0<b&&e>=b&&(window.jstiming.srt=e-b)}if(a){var d=window.jstiming.load;0<b&&e>=b&&(d.tick("_wtsrt",void 0,b),d.tick("wtsrt_",
+"_wtsrt",e),d.tick("tbsd_","wtsrt_"))}try{a=null,window.chrome&&window.chrome.csi&&(a=Math.floor(window.chrome.csi().pageT),d&&0<b&&(d.tick("_tbnd",void 0,window.chrome.csi().startE),d.tick("tbnd_","_tbnd",b))),null==a&&window.gtbExternal&&(a=window.gtbExternal.pageT()),null==a&&window.external&&(a=window.external.pageT,d&&0<b&&(d.tick("_tbnd",void 0,window.external.startE),d.tick("tbnd_","_tbnd",b))),a&&(window.jstiming.pt=a)}catch(k){}})();window.tickAboveFold=function(c){var a=0;if(c.offsetParent){do a+=c.offsetTop;while(c=c.offsetParent)}c=a;750>=c&&window.jstiming.load.tick("aft")};var f=!1;function g(){f||(f=!0,window.jstiming.load.tick("firstScrollTime"))}window.addEventListener?window.addEventListener("scroll",g,!1):window.attachEvent("onscroll",g);
+ })();</script>
+<meta content="blogger" name="generator">
+<link href="http://matlabdatamining.blogspot.com/favicon.ico" rel="icon" type="image/x-icon">
+<link href="./Data Mining in MATLAB_ Principal Components Analysis_files/Data Mining in MATLAB_ Principal Components Analysis.html" rel="canonical">
+<link rel="alternate" type="application/atom+xml" title="Data Mining in MATLAB - Atom" href="http://matlabdatamining.blogspot.com/feeds/posts/default">
+<link rel="alternate" type="application/rss+xml" title="Data Mining in MATLAB - RSS" href="http://matlabdatamining.blogspot.com/feeds/posts/default?alt=rss">
+<link rel="service.post" type="application/atom+xml" title="Data Mining in MATLAB - Atom" href="https://www.blogger.com/feeds/37324607/posts/default">
+
+<link rel="alternate" type="application/atom+xml" title="Data Mining in MATLAB - Atom" href="http://matlabdatamining.blogspot.com/feeds/2511612350739234558/comments/default">
+<!--[if IE]><script type="text/javascript" src="https://www.blogger.com/static/v1/jsbin/3161104989-ieretrofit.js"></script>
+<![endif]-->
+<!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
+<title>Data Mining in MATLAB: Principal Components Analysis</title>
+<link type="text/css" rel="stylesheet" href="./Data Mining in MATLAB_ Principal Components Analysis_files/4205868711-css_bundle_v2.css">
+<link type="text/css" rel="stylesheet" href="./Data Mining in MATLAB_ Principal Components Analysis_files/gsearch.css">
+<link type="text/css" rel="stylesheet" href="./Data Mining in MATLAB_ Principal Components Analysis_files/authorization.css">
+<style id="page-skin-1" type="text/css"><!--
+/*
+-----------------------------------------------
+Blogger Template Style
+Name:     Awesome Inc.
+Designer: Tina Chen
+URL:      tinachen.org
+----------------------------------------------- */
+/* Variable definitions
+====================
+<Variable name="keycolor" description="Main Color" type="color" default="#ffffff"/>
+<Group description="Page" selector="body">
+<Variable name="body.font" description="Font" type="font"
+default="normal normal 13px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+<Variable name="body.background.color" description="Background Color" type="color" default="#000000"/>
+<Variable name="body.text.color" description="Text Color" type="color" default="#ffffff"/>
+</Group>
+<Group description="Links" selector=".main-inner">
+<Variable name="link.color" description="Link Color" type="color" default="#888888"/>
+<Variable name="link.visited.color" description="Visited Color" type="color" default="#444444"/>
+<Variable name="link.hover.color" description="Hover Color" type="color" default="#cccccc"/>
+</Group>
+<Group description="Blog Title" selector=".header h1">
+<Variable name="header.font" description="Title Font" type="font"
+default="normal bold 40px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+<Variable name="header.text.color" description="Title Color" type="color" default="#ffffff" />
+<Variable name="header.background.color" description="Header Background" type="color" default="transparent" />
+</Group>
+<Group description="Blog Description" selector=".header .description">
+<Variable name="description.font" description="Font" type="font"
+default="normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+<Variable name="description.text.color" description="Text Color" type="color"
+default="#ffffff" />
+</Group>
+<Group description="Tabs Text" selector=".tabs-inner .widget li a">
+<Variable name="tabs.font" description="Font" type="font"
+default="normal bold 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+<Variable name="tabs.text.color" description="Text Color" type="color" default="#ffffff"/>
+<Variable name="tabs.selected.text.color" description="Selected Color" type="color" default="#ffffff"/>
+</Group>
+<Group description="Tabs Background" selector=".tabs-outer .PageList">
+<Variable name="tabs.background.color" description="Background Color" type="color" default="#141414"/>
+<Variable name="tabs.selected.background.color" description="Selected Color" type="color" default="#444444"/>
+<Variable name="tabs.border.color" description="Border Color" type="color" default="#222222"/>
+</Group>
+<Group description="Date Header" selector=".main-inner .widget h2.date-header, .main-inner .widget h2.date-header span">
+<Variable name="date.font" description="Font" type="font"
+default="normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+<Variable name="date.text.color" description="Text Color" type="color" default="#666666"/>
+<Variable name="date.border.color" description="Border Color" type="color" default="#222222"/>
+</Group>
+<Group description="Post Title" selector="h3.post-title, h4, h3.post-title a">
+<Variable name="post.title.font" description="Font" type="font"
+default="normal bold 22px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+<Variable name="post.title.text.color" description="Text Color" type="color" default="#ffffff"/>
+</Group>
+<Group description="Post Background" selector=".post">
+<Variable name="post.background.color" description="Background Color" type="color" default="#141414" />
+<Variable name="post.border.color" description="Border Color" type="color" default="#222222" />
+<Variable name="post.border.bevel.color" description="Bevel Color" type="color" default="#222222"/>
+</Group>
+<Group description="Gadget Title" selector="h2">
+<Variable name="widget.title.font" description="Font" type="font"
+default="normal bold 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+<Variable name="widget.title.text.color" description="Text Color" type="color" default="#ffffff"/>
+</Group>
+<Group description="Gadget Text" selector=".sidebar .widget">
+<Variable name="widget.font" description="Font" type="font"
+default="normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif"/>
+<Variable name="widget.text.color" description="Text Color" type="color" default="#ffffff"/>
+<Variable name="widget.alternate.text.color" description="Alternate Color" type="color" default="#666666"/>
+</Group>
+<Group description="Gadget Links" selector=".sidebar .widget">
+<Variable name="widget.link.color" description="Link Color" type="color" default="#888888"/>
+<Variable name="widget.link.visited.color" description="Visited Color" type="color" default="#444444"/>
+<Variable name="widget.link.hover.color" description="Hover Color" type="color" default="#cccccc"/>
+</Group>
+<Group description="Gadget Background" selector=".sidebar .widget">
+<Variable name="widget.background.color" description="Background Color" type="color" default="#141414"/>
+<Variable name="widget.border.color" description="Border Color" type="color" default="#222222"/>
+<Variable name="widget.border.bevel.color" description="Bevel Color" type="color" default="#000000"/>
+</Group>
+<Group description="Sidebar Background" selector=".column-left-inner .column-right-inner">
+<Variable name="widget.outer.background.color" description="Background Color" type="color" default="transparent" />
+</Group>
+<Group description="Images" selector=".main-inner">
+<Variable name="image.background.color" description="Background Color" type="color" default="transparent"/>
+<Variable name="image.border.color" description="Border Color" type="color" default="transparent"/>
+</Group>
+<Group description="Feed" selector=".blog-feeds">
+<Variable name="feed.text.color" description="Text Color" type="color" default="#ffffff"/>
+</Group>
+<Group description="Feed Links" selector=".blog-feeds">
+<Variable name="feed.link.color" description="Link Color" type="color" default="#888888"/>
+<Variable name="feed.link.visited.color" description="Visited Color" type="color" default="#444444"/>
+<Variable name="feed.link.hover.color" description="Hover Color" type="color" default="#cccccc"/>
+</Group>
+<Group description="Pager" selector=".blog-pager">
+<Variable name="pager.background.color" description="Background Color" type="color" default="#141414" />
+</Group>
+<Group description="Footer" selector=".footer-outer">
+<Variable name="footer.background.color" description="Background Color" type="color" default="#141414" />
+<Variable name="footer.text.color" description="Text Color" type="color" default="#ffffff" />
+</Group>
+<Variable name="title.shadow.spread" description="Title Shadow" type="length" default="-1px" min="-1px" max="100px"/>
+<Variable name="body.background" description="Body Background" type="background"
+color="#000000"
+default="$(color) none repeat scroll top left"/>
+<Variable name="body.background.gradient.cap" description="Body Gradient Cap" type="url"
+default="none"/>
+<Variable name="body.background.size" description="Body Background Size" type="string" default="auto"/>
+<Variable name="tabs.background.gradient" description="Tabs Background Gradient" type="url"
+default="none"/>
+<Variable name="header.background.gradient" description="Header Background Gradient" type="url" default="none" />
+<Variable name="header.padding.top" description="Header Top Padding" type="length" default="22px" min="0" max="100px"/>
+<Variable name="header.margin.top" description="Header Top Margin" type="length" default="0" min="0" max="100px"/>
+<Variable name="header.margin.bottom" description="Header Bottom Margin" type="length" default="0" min="0" max="100px"/>
+<Variable name="widget.padding.top" description="Widget Padding Top" type="length" default="8px" min="0" max="20px"/>
+<Variable name="widget.padding.side" description="Widget Padding Side" type="length" default="15px" min="0" max="100px"/>
+<Variable name="widget.outer.margin.top" description="Widget Top Margin" type="length" default="0" min="0" max="100px"/>
+<Variable name="widget.outer.background.gradient" description="Gradient" type="url" default="none" />
+<Variable name="widget.border.radius" description="Gadget Border Radius" type="length" default="0" min="0" max="100px"/>
+<Variable name="outer.shadow.spread" description="Outer Shadow Size" type="length" default="0" min="0" max="100px"/>
+<Variable name="date.header.border.radius.top" description="Date Header Border Radius Top" type="length" default="0" min="0" max="100px"/>
+<Variable name="date.header.position" description="Date Header Position" type="length" default="15px" min="0" max="100px"/>
+<Variable name="date.space" description="Date Space" type="length" default="30px" min="0" max="100px"/>
+<Variable name="date.position" description="Date Float" type="string" default="static" />
+<Variable name="date.padding.bottom" description="Date Padding Bottom" type="length" default="0" min="0" max="100px"/>
+<Variable name="date.border.size" description="Date Border Size" type="length" default="0" min="0" max="10px"/>
+<Variable name="date.background" description="Date Background" type="background" color="transparent"
+default="$(color) none no-repeat scroll top left" />
+<Variable name="date.first.border.radius.top" description="Date First top radius" type="length" default="0" min="0" max="100px"/>
+<Variable name="date.last.space.bottom" description="Date Last Space Bottom" type="length"
+default="20px" min="0" max="100px"/>
+<Variable name="date.last.border.radius.bottom" description="Date Last bottom radius" type="length" default="0" min="0" max="100px"/>
+<Variable name="post.first.padding.top" description="First Post Padding Top" type="length" default="0" min="0" max="100px"/>
+<Variable name="image.shadow.spread" description="Image Shadow Size" type="length" default="0" min="0" max="100px"/>
+<Variable name="image.border.radius" description="Image Border Radius" type="length" default="0" min="0" max="100px"/>
+<Variable name="separator.outdent" description="Separator Outdent" type="length" default="15px" min="0" max="100px"/>
+<Variable name="title.separator.border.size" description="Widget Title Border Size" type="length" default="1px" min="0" max="10px"/>
+<Variable name="list.separator.border.size" description="List Separator Border Size" type="length" default="1px" min="0" max="10px"/>
+<Variable name="shadow.spread" description="Shadow Size" type="length" default="0" min="0" max="100px"/>
+<Variable name="startSide" description="Side where text starts in blog language" type="automatic" default="left"/>
+<Variable name="endSide" description="Side where text ends in blog language" type="automatic" default="right"/>
+<Variable name="date.side" description="Side where date header is placed" type="string" default="right"/>
+<Variable name="pager.border.radius.top" description="Pager Border Top Radius" type="length" default="0" min="0" max="100px"/>
+<Variable name="pager.space.top" description="Pager Top Space" type="length" default="1em" min="0" max="20em"/>
+<Variable name="footer.background.gradient" description="Background Gradient" type="url" default="none" />
+<Variable name="mobile.background.size" description="Mobile Background Size" type="string"
+default="auto"/>
+<Variable name="mobile.background.overlay" description="Mobile Background Overlay" type="string"
+default="transparent none repeat scroll top left"/>
+<Variable name="mobile.button.color" description="Mobile Button Color" type="color" default="#ffffff" />
+*/
+/* Content
+----------------------------------------------- */
+body {
+font: normal normal 13px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #ffffff;
+background: #000000 url(http://www.blogblog.com/1kt/awesomeinc/body_background_dark.png) repeat scroll top left;
+}
+html body .content-outer {
+min-width: 0;
+max-width: 100%;
+width: 100%;
+}
+a:link {
+text-decoration: none;
+color: #888888;
+}
+a:visited {
+text-decoration: none;
+color: #444444;
+}
+a:hover {
+text-decoration: underline;
+color: #cccccc;
+}
+.body-fauxcolumn-outer .cap-top {
+position: absolute;
+z-index: 1;
+height: 276px;
+width: 100%;
+background: transparent url(http://www.blogblog.com/1kt/awesomeinc/body_gradient_dark.png) repeat-x scroll top left;
+_background-image: none;
+}
+/* Columns
+----------------------------------------------- */
+.content-inner {
+padding: 0;
+}
+.header-inner .section {
+margin: 0 16px;
+}
+.tabs-inner .section {
+margin: 0 16px;
+}
+.main-inner {
+padding-top: 30px;
+}
+.main-inner .column-center-inner,
+.main-inner .column-left-inner,
+.main-inner .column-right-inner {
+padding: 0 5px;
+}
+*+html body .main-inner .column-center-inner {
+margin-top: -30px;
+}
+#layout .main-inner .column-center-inner {
+margin-top: 0;
+}
+/* Header
+----------------------------------------------- */
+.header-outer {
+margin: 0 0 0 0;
+background: transparent none repeat scroll 0 0;
+}
+.Header h1 {
+font: normal bold 40px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #ffffff;
+text-shadow: 0 0 -1px #000000;
+}
+.Header h1 a {
+color: #ffffff;
+}
+.Header .description {
+font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #ffffff;
+}
+.header-inner .Header .titlewrapper,
+.header-inner .Header .descriptionwrapper {
+padding-left: 0;
+padding-right: 0;
+margin-bottom: 0;
+}
+.header-inner .Header .titlewrapper {
+padding-top: 22px;
+}
+/* Tabs
+----------------------------------------------- */
+.tabs-outer {
+overflow: hidden;
+position: relative;
+background: #141414 none repeat scroll 0 0;
+}
+#layout .tabs-outer {
+overflow: visible;
+}
+.tabs-cap-top, .tabs-cap-bottom {
+position: absolute;
+width: 100%;
+border-top: 1px solid #222222;
+}
+.tabs-cap-bottom {
+bottom: 0;
+}
+.tabs-inner .widget li a {
+display: inline-block;
+margin: 0;
+padding: .6em 1.5em;
+font: normal bold 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #ffffff;
+border-top: 1px solid #222222;
+border-bottom: 1px solid #222222;
+border-left: 1px solid #222222;
+height: 16px;
+line-height: 16px;
+}
+.tabs-inner .widget li:last-child a {
+border-right: 1px solid #222222;
+}
+.tabs-inner .widget li.selected a, .tabs-inner .widget li a:hover {
+background: #444444 none repeat-x scroll 0 -100px;
+color: #ffffff;
+}
+/* Headings
+----------------------------------------------- */
+h2 {
+font: normal bold 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #ffffff;
+}
+/* Widgets
+----------------------------------------------- */
+.main-inner .section {
+margin: 0 27px;
+padding: 0;
+}
+.main-inner .column-left-outer,
+.main-inner .column-right-outer {
+margin-top: 0;
+}
+#layout .main-inner .column-left-outer,
+#layout .main-inner .column-right-outer {
+margin-top: 0;
+}
+.main-inner .column-left-inner,
+.main-inner .column-right-inner {
+background: transparent none repeat 0 0;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-goog-ms-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-moz-border-radius: 0;
+-webkit-border-radius: 0;
+-goog-ms-border-radius: 0;
+border-radius: 0;
+}
+#layout .main-inner .column-left-inner,
+#layout .main-inner .column-right-inner {
+margin-top: 0;
+}
+.sidebar .widget {
+font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #ffffff;
+}
+.sidebar .widget a:link {
+color: #888888;
+}
+.sidebar .widget a:visited {
+color: #444444;
+}
+.sidebar .widget a:hover {
+color: #cccccc;
+}
+.sidebar .widget h2 {
+text-shadow: 0 0 -1px #000000;
+}
+.main-inner .widget {
+background-color: #141414;
+border: 1px solid #222222;
+padding: 0 15px 15px;
+margin: 20px -16px;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-goog-ms-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-moz-border-radius: 0;
+-webkit-border-radius: 0;
+-goog-ms-border-radius: 0;
+border-radius: 0;
+}
+.main-inner .widget h2 {
+margin: 0 -15px;
+padding: .6em 15px .5em;
+border-bottom: 1px solid #000000;
+}
+.footer-inner .widget h2 {
+padding: 0 0 .4em;
+border-bottom: 1px solid #000000;
+}
+.main-inner .widget h2 + div, .footer-inner .widget h2 + div {
+border-top: 1px solid #222222;
+padding-top: 8px;
+}
+.main-inner .widget .widget-content {
+margin: 0 -15px;
+padding: 7px 15px 0;
+}
+.main-inner .widget ul, .main-inner .widget #ArchiveList ul.flat {
+margin: -8px -15px 0;
+padding: 0;
+list-style: none;
+}
+.main-inner .widget #ArchiveList {
+margin: -8px 0 0;
+}
+.main-inner .widget ul li, .main-inner .widget #ArchiveList ul.flat li {
+padding: .5em 15px;
+text-indent: 0;
+color: #666666;
+border-top: 1px solid #222222;
+border-bottom: 1px solid #000000;
+}
+.main-inner .widget #ArchiveList ul li {
+padding-top: .25em;
+padding-bottom: .25em;
+}
+.main-inner .widget ul li:first-child, .main-inner .widget #ArchiveList ul.flat li:first-child {
+border-top: none;
+}
+.main-inner .widget ul li:last-child, .main-inner .widget #ArchiveList ul.flat li:last-child {
+border-bottom: none;
+}
+.post-body {
+position: relative;
+}
+.main-inner .widget .post-body ul {
+padding: 0 2.5em;
+margin: .5em 0;
+list-style: disc;
+}
+.main-inner .widget .post-body ul li {
+padding: 0.25em 0;
+margin-bottom: .25em;
+color: #ffffff;
+border: none;
+}
+.footer-inner .widget ul {
+padding: 0;
+list-style: none;
+}
+.widget .zippy {
+color: #666666;
+}
+/* Posts
+----------------------------------------------- */
+body .main-inner .Blog {
+padding: 0;
+margin-bottom: 1em;
+background-color: transparent;
+border: none;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+-goog-ms-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+.main-inner .section:last-child .Blog:last-child {
+padding: 0;
+margin-bottom: 1em;
+}
+.main-inner .widget h2.date-header {
+margin: 0 -15px 1px;
+padding: 0 0 0 0;
+font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #666666;
+background: transparent none no-repeat scroll top left;
+border-top: 0 solid #222222;
+border-bottom: 1px solid #000000;
+-moz-border-radius-topleft: 0;
+-moz-border-radius-topright: 0;
+-webkit-border-top-left-radius: 0;
+-webkit-border-top-right-radius: 0;
+border-top-left-radius: 0;
+border-top-right-radius: 0;
+position: static;
+bottom: 100%;
+right: 15px;
+text-shadow: 0 0 -1px #000000;
+}
+.main-inner .widget h2.date-header span {
+font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+display: block;
+padding: .5em 15px;
+border-left: 0 solid #222222;
+border-right: 0 solid #222222;
+}
+.date-outer {
+position: relative;
+margin: 30px 0 20px;
+padding: 0 15px;
+background-color: #141414;
+border: 1px solid #222222;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-goog-ms-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-moz-border-radius: 0;
+-webkit-border-radius: 0;
+-goog-ms-border-radius: 0;
+border-radius: 0;
+}
+.date-outer:first-child {
+margin-top: 0;
+}
+.date-outer:last-child {
+margin-bottom: 20px;
+-moz-border-radius-bottomleft: 0;
+-moz-border-radius-bottomright: 0;
+-webkit-border-bottom-left-radius: 0;
+-webkit-border-bottom-right-radius: 0;
+-goog-ms-border-bottom-left-radius: 0;
+-goog-ms-border-bottom-right-radius: 0;
+border-bottom-left-radius: 0;
+border-bottom-right-radius: 0;
+}
+.date-posts {
+margin: 0 -15px;
+padding: 0 15px;
+clear: both;
+}
+.post-outer, .inline-ad {
+border-top: 1px solid #222222;
+margin: 0 -15px;
+padding: 15px 15px;
+}
+.post-outer {
+padding-bottom: 10px;
+}
+.post-outer:first-child {
+padding-top: 0;
+border-top: none;
+}
+.post-outer:last-child, .inline-ad:last-child {
+border-bottom: none;
+}
+.post-body {
+position: relative;
+}
+.post-body img {
+padding: 8px;
+background: #222222;
+border: 1px solid transparent;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-moz-border-radius: 0;
+-webkit-border-radius: 0;
+border-radius: 0;
+}
+h3.post-title, h4 {
+font: normal bold 22px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #ffffff;
+}
+h3.post-title a {
+font: normal bold 22px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+color: #ffffff;
+}
+h3.post-title a:hover {
+color: #cccccc;
+text-decoration: underline;
+}
+.post-header {
+margin: 0 0 1em;
+}
+.post-body {
+line-height: 1.4;
+}
+.post-outer h2 {
+color: #ffffff;
+}
+.post-footer {
+margin: 1.5em 0 0;
+}
+#blog-pager {
+padding: 15px;
+font-size: 120%;
+background-color: #141414;
+border: 1px solid #222222;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-goog-ms-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-moz-border-radius: 0;
+-webkit-border-radius: 0;
+-goog-ms-border-radius: 0;
+border-radius: 0;
+-moz-border-radius-topleft: 0;
+-moz-border-radius-topright: 0;
+-webkit-border-top-left-radius: 0;
+-webkit-border-top-right-radius: 0;
+-goog-ms-border-top-left-radius: 0;
+-goog-ms-border-top-right-radius: 0;
+border-top-left-radius: 0;
+border-top-right-radius-topright: 0;
+margin-top: 1em;
+}
+.blog-feeds, .post-feeds {
+margin: 1em 0;
+text-align: center;
+color: #ffffff;
+}
+.blog-feeds a, .post-feeds a {
+color: #888888;
+}
+.blog-feeds a:visited, .post-feeds a:visited {
+color: #444444;
+}
+.blog-feeds a:hover, .post-feeds a:hover {
+color: #cccccc;
+}
+.post-outer .comments {
+margin-top: 2em;
+}
+/* Comments
+----------------------------------------------- */
+.comments .comments-content .icon.blog-author {
+background-repeat: no-repeat;
+background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB9sLFwMeCjjhcOMAAAD+SURBVDjLtZSvTgNBEIe/WRRnm3U8RC1neQdsm1zSBIU9VVF1FkUguQQsD9ITmD7ECZIJSE4OZo9stoVjC/zc7ky+zH9hXwVwDpTAWWLrgS3QAe8AZgaAJI5zYAmc8r0G4AHYHQKVwII8PZrZFsBFkeRCABYiMh9BRUhnSkPTNCtVXYXURi1FpBDgArj8QU1eVXUzfnjv7yP7kwu1mYrkWlU33vs1QNu2qU8pwN0UpKoqokjWwCztrMuBhEhmh8bD5UDqur75asbcX0BGUB9/HAMB+r32hznJgXy2v0sGLBcyAJ1EK3LFcbo1s91JeLwAbwGYu7TP/3ZGfnXYPgAVNngtqatUNgAAAABJRU5ErkJggg==);
+}
+.comments .comments-content .loadmore a {
+border-top: 1px solid #222222;
+border-bottom: 1px solid #222222;
+}
+.comments .continue {
+border-top: 2px solid #222222;
+}
+/* Footer
+----------------------------------------------- */
+.footer-outer {
+margin: -0 0 -1px;
+padding: 0 0 0;
+color: #ffffff;
+overflow: hidden;
+}
+.footer-fauxborder-left {
+border-top: 1px solid #222222;
+background: #141414 none repeat scroll 0 0;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+-goog-ms-box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+box-shadow: 0 0 0 rgba(0, 0, 0, .2);
+margin: 0 -0;
+}
+/* Mobile
+----------------------------------------------- */
+body.mobile {
+background-size: auto;
+}
+.mobile .body-fauxcolumn-outer {
+background: transparent none repeat scroll top left;
+}
+*+html body.mobile .main-inner .column-center-inner {
+margin-top: 0;
+}
+.mobile .main-inner .widget {
+padding: 0 0 15px;
+}
+.mobile .main-inner .widget h2 + div,
+.mobile .footer-inner .widget h2 + div {
+border-top: none;
+padding-top: 0;
+}
+.mobile .footer-inner .widget h2 {
+padding: 0.5em 0;
+border-bottom: none;
+}
+.mobile .main-inner .widget .widget-content {
+margin: 0;
+padding: 7px 0 0;
+}
+.mobile .main-inner .widget ul,
+.mobile .main-inner .widget #ArchiveList ul.flat {
+margin: 0 -15px 0;
+}
+.mobile .main-inner .widget h2.date-header {
+right: 0;
+}
+.mobile .date-header span {
+padding: 0.4em 0;
+}
+.mobile .date-outer:first-child {
+margin-bottom: 0;
+border: 1px solid #222222;
+-moz-border-radius-topleft: 0;
+-moz-border-radius-topright: 0;
+-webkit-border-top-left-radius: 0;
+-webkit-border-top-right-radius: 0;
+-goog-ms-border-top-left-radius: 0;
+-goog-ms-border-top-right-radius: 0;
+border-top-left-radius: 0;
+border-top-right-radius: 0;
+}
+.mobile .date-outer {
+border-color: #222222;
+border-width: 0 1px 1px;
+}
+.mobile .date-outer:last-child {
+margin-bottom: 0;
+}
+.mobile .main-inner {
+padding: 0;
+}
+.mobile .header-inner .section {
+margin: 0;
+}
+.mobile .post-outer, .mobile .inline-ad {
+padding: 5px 0;
+}
+.mobile .tabs-inner .section {
+margin: 0 10px;
+}
+.mobile .main-inner .widget h2 {
+margin: 0;
+padding: 0;
+}
+.mobile .main-inner .widget h2.date-header span {
+padding: 0;
+}
+.mobile .main-inner .widget .widget-content {
+margin: 0;
+padding: 7px 0 0;
+}
+.mobile #blog-pager {
+border: 1px solid transparent;
+background: #141414 none repeat scroll 0 0;
+}
+.mobile .main-inner .column-left-inner,
+.mobile .main-inner .column-right-inner {
+background: transparent none repeat 0 0;
+-moz-box-shadow: none;
+-webkit-box-shadow: none;
+-goog-ms-box-shadow: none;
+box-shadow: none;
+}
+.mobile .date-posts {
+margin: 0;
+padding: 0;
+}
+.mobile .footer-fauxborder-left {
+margin: 0;
+border-top: inherit;
+}
+.mobile .main-inner .section:last-child .Blog:last-child {
+margin-bottom: 0;
+}
+.mobile-index-contents {
+color: #ffffff;
+}
+.mobile .mobile-link-button {
+background: #888888 none repeat scroll 0 0;
+}
+.mobile-link-button a:link, .mobile-link-button a:visited {
+color: #ffffff;
+}
+.mobile .tabs-inner .PageList .widget-content {
+background: transparent;
+border-top: 1px solid;
+border-color: #222222;
+color: #ffffff;
+}
+.mobile .tabs-inner .PageList .widget-content .pagelist-arrow {
+border-left: 1px solid #222222;
+}
+
+--></style>
+<style id="template-skin-1" type="text/css"><!--
+body {
+min-width: 960px;
+}
+.content-outer, .content-fauxcolumn-outer, .region-inner {
+min-width: 960px;
+max-width: 960px;
+_width: 960px;
+}
+.main-inner .columns {
+padding-left: 0;
+padding-right: 400px;
+}
+.main-inner .fauxcolumn-center-outer {
+left: 0;
+right: 400px;
+/* IE6 does not respect left and right together */
+_width: expression(this.parentNode.offsetWidth -
+parseInt("0") -
+parseInt("400px") + 'px');
+}
+.main-inner .fauxcolumn-left-outer {
+width: 0;
+}
+.main-inner .fauxcolumn-right-outer {
+width: 400px;
+}
+.main-inner .column-left-outer {
+width: 0;
+right: 100%;
+margin-left: -0;
+}
+.main-inner .column-right-outer {
+width: 400px;
+margin-right: -400px;
+}
+#layout {
+min-width: 0;
+}
+#layout .content-outer {
+min-width: 0;
+width: 800px;
+}
+#layout .region-inner {
+min-width: 0;
+width: auto;
+}
+--></style>
+<script type="text/javascript">var a="&m=1",d="(^|&)m=",e="?",f="?m=1";function g(){var b=window.location.href,c=b.split(e);switch(c.length){case 1:return b+f;case 2:return 0<=c[1].search(d)?null:b+a;default:return null}}var h=navigator.userAgent;if(-1!=h.indexOf("Mobile")&&-1!=h.indexOf("WebKit")&&-1==h.indexOf("iPad")||-1!=h.indexOf("Opera Mini")||-1!=h.indexOf("IEMobile")){var k=g();k&&window.location.replace(k)};
+</script><script type="text/javascript">
+if (window.jstiming) window.jstiming.load.tick('headEnd');
+</script><script type="text/javascript" src="./Data Mining in MATLAB_ Principal Components Analysis_files/google_top_exp.js"></script><script type="text/javascript" src="./Data Mining in MATLAB_ Principal Components Analysis_files/saved_resource"></script><style>.gc-bubbleDefault{background-color:transparent !important;text-align:left;padding:0 !important;margin:0 !important;border:0 !important;table-layout:auto !important}.gc-reset{background-color:transparent !important;border:0 !important;padding:0 !important;margin:0 !important;text-align:left}.pls-bubbleTop{border-bottom:1px solid #ccc !important}.pls-topTail,.pls-vertShimLeft,.pls-contentLeft{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/border_3.gif) !important}.pls-topTail{background-repeat:repeat-x !important;background-position:bottom !important}.pls-vertShim{background-color:#fff !important;text-align:right}.tbl-grey .pls-vertShim{background-color:#f5f5f5 !important}.pls-vertShimLeft{background-repeat:repeat-y !important;background-position:right !important;height:4px}.pls-vertShimRight{height:4px}.pls-confirm-container .pls-vertShim{background-color:#fff3c2 !important}.pls-contentWrap{background-color:#fff !important;position:relative !important;vertical-align:top}.pls-contentLeft{background-repeat:repeat-y;background-position:right;vertical-align:top}.pls-dropRight{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropR_3.png) !important;background-repeat:repeat-y !important;vertical-align:top}.pls-vert,.pls-tailleft,.pls-dropTR .pls-dropBR,.pls-dropBL,.pls-vert img{vertical-align:top}.pls-dropBottom{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropB_3.png) !important;background-repeat:repeat-x !important;width:100%;vertical-align:top}.pls-topLeft{background:inherit !important;text-align:right;vertical-align:bottom}.pls-topRight{background:inherit !important;text-align:left;vertical-align:bottom}.pls-bottomLeft{background:inherit !important;text-align:right}.pls-bottomRight{background:inherit !important;text-align:left;vertical-align:top}.pls-tailtop,.pls-tailright,.pls-tailbottom,.pls-tailleft{display:none;position:relative}.pls-tailbottom,.pls-tailtop,.pls-tailright,.pls-tailleft,.pls-dropTR,.pls-dropBR,.pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite_3.png) !important;background-repeat:no-repeat}.tbl-grey .pls-tailbottom,.tbl-grey .pls-tailtop,.tbl-grey .pls-tailright,.tbl-grey .pls-tailleft,.tbl-grey .pls-dropTR,.tbl-grey .pls-dropBR,.tbl-grey .pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite-grey.png) !important}.pls-tailbottom{background-position:-23px 0}.pls-confirm-container .pls-tailbottom{background-position:-23px -10px}.pls-tailtop{background-position:-19px -20px}.pls-tailright{background-position:0 0}.pls-tailleft{background-position:-10px 0}.pls-tailtop{vertical-align:top}.gc-bubbleDefault td{line-height:0;font-size:0}.pls-topLeft img,.pls-topRight img,.pls-tailbottom{vertical-align:bottom}.pls-bottomLeft img,.bubbleDropTR,.pls-dropBottomL img,.pls-dropBottom img,.pls-dropBottomR img,.pls-bottomLeft{vertical-align:top}.pls-dropTR{background-position:0 -22px}.pls-dropBR{background-position:0 -27px}.pls-dropBL{background-position:0 -16px}.pls-spacertop,.pls-spacerright,.pls-spacerbottom,.pls-spacerleft{position:static !important}.pls-spinner{bottom:0;position:absolute;left:0;margin:auto;right:0;top:0} </style><link type="text/css" href="./Data Mining in MATLAB_ Principal Components Analysis_files/default+en.css" rel="stylesheet"><script type="text/javascript" src="./Data Mining in MATLAB_ Principal Components Analysis_files/default+en.I.js"></script></head>
+<body class=" variant-dark">
+<div class="navbar section" id="navbar" name="Navbar"><div class="widget Navbar" id="Navbar1"><script type="text/javascript">
+    function setAttributeOnload(object, attribute, val) {
+      if(window.addEventListener) {
+        window.addEventListener('load',
+          function(){ object[attribute] = val; }, false);
+      } else {
+        window.attachEvent('onload', function(){ object[attribute] = val; });
+      }
+    }
+  </script>
+<div id="navbar-iframe-container"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="" tabindex="0" vspace="0" width="100%" id="navbar-iframe" name="navbar-iframe" src="./Data Mining in MATLAB_ Principal Components Analysis_files/navbar.html"></iframe></div>
+<script type="text/javascript" src="./Data Mining in MATLAB_ Principal Components Analysis_files/plusone.js" gapi_processed="true"></script>
+<script type="text/javascript">
+        gapi.load("gapi.iframes:gapi.iframes.style.bubble", function() {
+          if (gapi.iframes && gapi.iframes.getContext) {
+            gapi.iframes.getContext().openChild({
+                url: 'https://www.blogger.com/navbar.g?targetBlogID\07537324607\46blogName\75Data+Mining+in+MATLAB\46publishMode\75PUBLISH_MODE_BLOGSPOT\46navbarType\75LIGHT\46layoutType\75LAYOUTS\46searchRoot\75//matlabdatamining.blogspot.com/search\46blogLocale\75en\46v\0752\46homepageUrl\75http://matlabdatamining.blogspot.com/\46targetPostID\0752511612350739234558\46blogPostOrPageUrl\75http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html\46vt\0753446290210262270573',
+                where: document.getElementById("navbar-iframe-container"),
+                id: "navbar-iframe"
+            });
+          }
+        });
+      </script><script type="text/javascript">
+(function() {
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = '//pagead2.googlesyndication.com/pagead/js/google_top_exp.js';
+var head = document.getElementsByTagName('head')[0];
+if (head) {
+head.appendChild(script);
+}})();
+</script>
+</div></div>
+<div class="body-fauxcolumns">
+<div class="fauxcolumn-outer body-fauxcolumn-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+</div>
+<div class="content">
+<div class="content-fauxcolumns">
+<div class="fauxcolumn-outer content-fauxcolumn-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+</div>
+<div class="content-outer">
+<div class="content-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left content-fauxborder-left">
+<div class="fauxborder-right content-fauxborder-right"></div>
+<div class="content-inner">
+<header>
+<div class="header-outer">
+<div class="header-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left header-fauxborder-left">
+<div class="fauxborder-right header-fauxborder-right"></div>
+<div class="region-inner header-inner">
+<div class="header section" id="header" name="Header"><div class="widget Header" id="Header1">
+<div id="header-inner">
+<div class="titlewrapper">
+<h1 class="title">
+<a href="http://matlabdatamining.blogspot.com/">Data Mining in MATLAB</a>
+</h1>
+</div>
+<div class="descriptionwrapper">
+<p class="description"><span>Exploring data mining using MATLAB (and sometimes MATLAB Toolboxes).</span></p>
+</div>
+</div>
+</div></div>
+</div>
+</div>
+<div class="header-cap-bottom cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+</header>
+<div class="tabs-outer">
+<div class="tabs-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left tabs-fauxborder-left">
+<div class="fauxborder-right tabs-fauxborder-right"></div>
+<div class="region-inner tabs-inner">
+<div class="tabs section" id="crosscol" name="Cross-Column"></div>
+<div class="tabs section" id="crosscol-overflow" name="Cross-Column 2"></div>
+</div>
+</div>
+<div class="tabs-cap-bottom cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<div class="main-outer">
+<div class="main-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left main-fauxborder-left">
+<div class="fauxborder-right main-fauxborder-right"></div>
+<div class="region-inner main-inner">
+<div class="columns fauxcolumns">
+<div class="fauxcolumn-outer fauxcolumn-center-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<div class="fauxcolumn-outer fauxcolumn-left-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<div class="fauxcolumn-outer fauxcolumn-right-outer">
+<div class="cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left">
+<div class="fauxborder-right"></div>
+<div class="fauxcolumn-inner">
+</div>
+</div>
+<div class="cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<!-- corrects IE6 width calculation -->
+<div class="columns-inner">
+<div class="column-center-outer">
+<div class="column-center-inner">
+<div class="main section" id="main" name="Main"><div id="uds-searchControl"><a name="uds-search-results"></a><div id="uds-searchResults"><div class="gsc-control" dir="ltr"><div class="gsc-results-wrapper-nooverlay"><div class="gsc-tabsAreaInvisible"><div class="gsc-tabHeader gsc-inline-block gsc-tabhActive">This Blog</div><span class="gs-spacer"> </span></div><div class="gsc-above-wrapper-area-invisible"><table cellspacing="0" cellpadding="0" class="gsc-above-wrapper-area-container"><tbody><tr><td class="gsc-result-info-container"><div class="gsc-result-info-invisible"></div></td></tr></tbody></table></div><div class="gsc-resultsbox-invisible"><div class="gsc-resultsRoot gsc-tabData gsc-tabdActive"><table cellspacing="0" cellpadding="0" class="gsc-resultsHeader"><tbody><tr><td class="gsc-twiddleRegionCell"><div class="gsc-twiddle"><div class="gsc-title">This Blog</div></div><div class="gsc-stats"></div><div class="gsc-results-selector gsc-more-results-active"><div class="gsc-result-selector gsc-one-result" title="show one result">&nbsp;</div><div class="gsc-result-selector gsc-more-results" title="show more results">&nbsp;</div><div class="gsc-result-selector gsc-all-results" title="show all results">&nbsp;</div></div></td><td class="gsc-configLabelCell"><span class="gsc-configLabel gsc-twiddle-closed" title="settings">&nbsp;</span></td></tr></tbody></table><div class="gsc-config gsc-blogConfig" style="display: none;"><form class="gsc-config gsc-blogConfig"></form></div><div><div class="gsc-expansionArea"></div></div></div></div></div></div></div><div id="uds-searchClearResults" class="gsc-clear-button" style="display: none;">&nbsp;</div></div><div class="widget Blog" id="Blog1">
+<div class="blog-posts hfeed">
+<!-- google_ad_section_start(name=default) -->
+
+          <div class="date-outer">
+        
+<h2 class="date-header"><span>Friday, February 26, 2010</span></h2>
+
+          <div class="date-posts">
+        
+<div class="post-outer">
+<div class="post hentry uncustomized-post-template" itemprop="blogPost" itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+<meta content="37324607" itemprop="blogId">
+<meta content="2511612350739234558" itemprop="postId">
+<a name="2511612350739234558"></a>
+<h3 class="post-title entry-title" itemprop="name">
+Principal Components Analysis
+</h3>
+<div class="post-header">
+<div class="post-header-line-1"></div>
+</div>
+<div class="post-body entry-content" id="post-body-2511612350739234558" itemprop="description articleBody">
+<b>Introduction</b><br><br>Real-world data sets usually exhibit relationships among their variables.  These relationships are often linear, or at least approximately so, making them amenable to common analysis techniques.  One such technique is <i>principal component analysis</i> ("PCA"), which rotates the original data to new coordinates, making the data as "flat" as possible.<br><br>Given a table of two or more variables, PCA generates a new table with the same number of variables, called the <i>principal components</i>.  Each principal component is a linear transformation of the entire original data set.  The coefficients of the principal components are calculated so that the first principal component contains the maximum variance (which we may tentatively think of as the "maximum information").  The second principal component is calculated to have the second most variance, and, importantly, is uncorrelated (in a linear sense) with the first principal component.  Further principal components, if there are any, exhibit decreasing variance and are uncorrelated with all other principal components.<br><br>PCA is completely reversible (the original data may be recovered exactly from the principal components), making it a versatile tool, useful for data reduction, noise rejection, visualization and data compression among other things.  This article walks through the specific mechanics of calculating the principal components of a data set in MATLAB, using either the MATLAB Statistics Toolbox, or just the base MATLAB product.<br><br><br><b>Performing Principal Components Analysis</b><br><br><br>Performing PCA will be illustrated using the following data set, which consists of 3 measurements taken of a particular subject over time:<br><br><br>&gt;&gt; A = [269.8 38.9 50.5<br>272.4 39.5 50.0<br>270.0 38.9 50.5<br>272.0 39.3 50.2<br>269.8 38.9 50.5<br>269.8 38.9 50.5<br>268.2 38.6 50.2<br>268.2 38.6 50.8<br>267.0 38.2 51.1<br>267.8 38.4 51.0<br>273.6 39.6 50.0<br>271.2 39.1 50.4<br>269.8 38.9 50.5<br>270.0 38.9 50.5<br>270.0 38.9 50.5<br>];<br><br><br>We determine the size of this data set thus:<br><br><br>&gt;&gt; [n m] = size(A)<br><br>n =<br><br>    15<br><br><br>m =<br><br>     3<br><br><br>To summarize the data, we calculate the sample mean vector and the sample standard deviation vector:<br><br><br>&gt;&gt; AMean = mean(A)<br><br>AMean =<br><br>  269.9733   38.9067   50.4800<br><br>&gt;&gt; AStd = std(A)<br><br>AStd =<br><br>    1.7854    0.3751    0.3144<br><br><br>Most often, the first step in PCA is to <i>standardize</i> the data.  Here, "standardization" means subtracting the sample mean from each observation, then dividing by the sample standard deviation.  This centers and scales the data.  Sometimes there are good reasons for modifying or not performing this step, but I will recommend that you standardize unless you have a good reason not to.  This is easy to perform, as follows:<br><br><br>&gt;&gt; B = (A - repmat(AMean,[n 1])) ./ repmat(AStd,[n 1])<br><br>B =<br><br>   -0.0971   -0.0178    0.0636<br>    1.3591    1.5820   -1.5266<br>    0.0149   -0.0178    0.0636<br>    1.1351    1.0487   -0.8905<br>   -0.0971   -0.0178    0.0636<br>   -0.0971   -0.0178    0.0636<br>   -0.9932   -0.8177   -0.8905<br>   -0.9932   -0.8177    1.0178<br>   -1.6653   -1.8842    1.9719<br>   -1.2173   -1.3509    1.6539<br>    2.0312    1.8486   -1.5266<br>    0.6870    0.5155   -0.2544<br>   -0.0971   -0.0178    0.0636<br>    0.0149   -0.0178    0.0636<br>    0.0149   -0.0178    0.0636<br><br><br>This calculation can also be carried out using the <i>zscore</i> function from the Statistics Toolbox:<br><br><br>&gt;&gt; B = zscore(A)<br><br>B =<br><br>   -0.0971   -0.0178    0.0636<br>    1.3591    1.5820   -1.5266<br>    0.0149   -0.0178    0.0636<br>    1.1351    1.0487   -0.8905<br>   -0.0971   -0.0178    0.0636<br>   -0.0971   -0.0178    0.0636<br>   -0.9932   -0.8177   -0.8905<br>   -0.9932   -0.8177    1.0178<br>   -1.6653   -1.8842    1.9719<br>   -1.2173   -1.3509    1.6539<br>    2.0312    1.8486   -1.5266<br>    0.6870    0.5155   -0.2544<br>   -0.0971   -0.0178    0.0636<br>    0.0149   -0.0178    0.0636<br>    0.0149   -0.0178    0.0636<br><br><br>Calculating the coefficients of the principal components and their respective variances is done by finding the eigenfunctions of the sample covariance matrix:<br><br><br>&gt;&gt; [V D] = eig(cov(B))<br><br>V =<br><br>    0.6505    0.4874   -0.5825<br>   -0.7507    0.2963   -0.5904<br>   -0.1152    0.8213    0.5587<br><br><br>D =<br><br>    0.0066         0         0<br>         0    0.1809         0<br>         0         0    2.8125<br><br><br>The matrix V contains the coefficients for the principal components.  The diagonal elements of D store the variance of the respective principal components.  We can extract the diagonal like this:<br><br><br>&gt;&gt; diag(D)<br><br>ans =<br><br>    0.0066<br>    0.1809<br>    2.8125<br><br><br>The coefficients and respective variances of the principal components could also be found using the <i>princomp</i> function from the Statistics Toolbox:<br><br><br>&gt;&gt; [COEFF SCORE LATENT] = princomp(B)<br><br>COEFF =<br><br>    0.5825   -0.4874    0.6505<br>    0.5904   -0.2963   -0.7507<br>   -0.5587   -0.8213   -0.1152<br><br><br>SCORE =<br><br>   -0.1026    0.0003   -0.0571<br>    2.5786    0.1226   -0.1277<br>   -0.0373   -0.0543    0.0157<br>    1.7779   -0.1326    0.0536<br>   -0.1026    0.0003   -0.0571<br>   -0.1026    0.0003   -0.0571<br>   -0.5637    1.4579    0.0704<br>   -1.6299   -0.1095   -0.1495<br>   -3.1841   -0.2496    0.1041<br>   -2.4306   -0.3647    0.0319<br>    3.1275   -0.2840    0.1093<br>    0.8467   -0.2787    0.0892<br>   -0.1026    0.0003   -0.0571<br>   -0.0373   -0.0543    0.0157<br>   -0.0373   -0.0543    0.0157<br><br><br>LATENT =<br><br>    2.8125<br>    0.1809<br>    0.0066<br><br><br>Note three important things about the above:<br><br>1. The order of the principal components from <i>princomp</i> is opposite of that from <i>eig(cov(B))</i>.  <i>princomp</i> orders the principal components so that the first one appears in column 1, whereas <i>eig(cov(B))</i> stores it in the last column.<br><br>2. Some of the coefficients from each method have the opposite sign.  This is fine: There is no "natural" orientation for principal components, so you can expect different software to produce different mixes of signs.<br><br>3. SCORE contains the actual principal components, as calculated by <i>princomp</i>.<br><br>To calculate the principal components without <i>princomp</i>, simply multiply the standardized data by the principal component coefficients:<br><br><br>&gt;&gt; B * COEFF<br><br>ans =<br><br>   -0.1026    0.0003   -0.0571<br>    2.5786    0.1226   -0.1277<br>   -0.0373   -0.0543    0.0157<br>    1.7779   -0.1326    0.0536<br>   -0.1026    0.0003   -0.0571<br>   -0.1026    0.0003   -0.0571<br>   -0.5637    1.4579    0.0704<br>   -1.6299   -0.1095   -0.1495<br>   -3.1841   -0.2496    0.1041<br>   -2.4306   -0.3647    0.0319<br>    3.1275   -0.2840    0.1093<br>    0.8467   -0.2787    0.0892<br>   -0.1026    0.0003   -0.0571<br>   -0.0373   -0.0543    0.0157<br>   -0.0373   -0.0543    0.0157<br><br><br>To reverse this transformation, simply multiply by the transpose of the coefficent matrix:<br><br><br>&gt;&gt; (B * COEFF) * COEFF'<br><br>ans =<br><br>   -0.0971   -0.0178    0.0636<br>    1.3591    1.5820   -1.5266<br>    0.0149   -0.0178    0.0636<br>    1.1351    1.0487   -0.8905<br>   -0.0971   -0.0178    0.0636<br>   -0.0971   -0.0178    0.0636<br>   -0.9932   -0.8177   -0.8905<br>   -0.9932   -0.8177    1.0178<br>   -1.6653   -1.8842    1.9719<br>   -1.2173   -1.3509    1.6539<br>    2.0312    1.8486   -1.5266<br>    0.6870    0.5155   -0.2544<br>   -0.0971   -0.0178    0.0636<br>    0.0149   -0.0178    0.0636<br>    0.0149   -0.0178    0.0636<br><br><br>Finally, to get back to the original data, multiply each observation by the sample standard deviation vector and add the mean vector:<br><br><br>&gt;&gt; ((B * COEFF) * COEFF') .* repmat(AStd,[n 1]) + repmat(AMean,[n 1])<br><br>ans =<br><br>  269.8000   38.9000   50.5000<br>  272.4000   39.5000   50.0000<br>  270.0000   38.9000   50.5000<br>  272.0000   39.3000   50.2000<br>  269.8000   38.9000   50.5000<br>  269.8000   38.9000   50.5000<br>  268.2000   38.6000   50.2000<br>  268.2000   38.6000   50.8000<br>  267.0000   38.2000   51.1000<br>  267.8000   38.4000   51.0000<br>  273.6000   39.6000   50.0000<br>  271.2000   39.1000   50.4000<br>  269.8000   38.9000   50.5000<br>  270.0000   38.9000   50.5000<br>  270.0000   38.9000   50.5000<br><br><br>This completes the round trip from the original data to the principal components and back to the original data.  In some applications, the principal components are modified before the return trip.<br><br>Let's consider what we've gained by making the trip to the principal component coordinate system.  First, more variance has indeed been squeezed in the first principal component, which we can see by taking the sample variance of principal components:<br><br><br>&gt;&gt; var(SCORE)<br><br>ans =<br><br>    2.8125    0.1809    0.0066<br><br><br>The cumulative variance contained in the first so many principal components can be easily calculated thus:<br><br><br>&gt;&gt; cumsum(var(SCORE)) / sum(var(SCORE))<br><br>ans =<br><br>    0.9375    0.9978    1.0000<br><br><br>Interestingly in this case, the first principal component contains nearly 94% of the variance of the original table.  A lossy data compression scheme which discarded the second and third principal components would compress 3 variables into 1, while losing only 6% of the variance.<br><br>The other important thing to note about the principal components is that they are completely uncorrelated (as measured by the usual Pearson correlation), which we can test by calculating their correlation matrix:<br><br><br>&gt;&gt; corrcoef(SCORE)<br><br>ans =<br><br>    1.0000   -0.0000    0.0000<br>   -0.0000    1.0000   -0.0000<br>    0.0000   -0.0000    1.0000<br><br><br><b>Discussion</b><br><br>PCA "squeezes" as much information (as measured by variance) as possible into the first principal components.  In some cases the number of principal components needed to store the vast majority of variance is shockingly small: a tremendous feat of data manipulation.  This transformation can be performed quickly on contemporary hardware and is invertible, permitting any number of useful applications.<br><br>For the most part, PCA really is as wonderful as it seems.  There are a few caveats, however:<br><br>1. PCA doesn't always work well, in terms of compressing the variance.  Sometimes variables just aren't related in a way which is easily exploited by PCA.  This means that all or nearly all of the principal components will be needed to capture the multivariate variance in the data, making the use of PCA moot.<br><br>2. Variance may not be what we want condensed into a few variables.  For example, if we are using PCA to reduce data for predictive model construction, then it is not necessarily the case that the first principal components yield a better model than the last principal components (though it often works out more or less that way).<br><br>3. PCA is built from components, such as the sample covariance, which are not statistically robust.  This means that PCA may be thrown off by outliers and other data pathologies.  How seriously this affects the result is specific to the data and application.<br><br>4. Though PCA can cram much of the variance in a data set into fewer variables, it still requires all of the variables to generate the principal components of future observations.  Note that this is true, regardless of how many principal components are retained for the application.  PCA is <u>not</u> a subset selection procedure, and this may have important logistical implications.<br><br><br><br><b>Further Reading</b><br><br>See also the Feb-28-2010 posting, <a href="http://matlabdatamining.blogspot.com/2010/02/putting-pca-to-work.html">Putting PCA to Work</a> and the Dec-11-2010 posting, <a href="http://matlabdatamining.blogspot.com/2010/12/linear-discriminant-analysis-lda.html">Linear Discriminant Analysis (LDA) </a>.<br><br><br><i>Multivariate Statistical Methods: A Primer</i>, by Manly (ISBN: 0-412-28620-3)<br><br>Note: The first edition is adequate for understanding and coding PCA, and is at present much cheaper than the second or third editions.
+<div style="clear: both;"></div>
+</div>
+<div class="post-footer">
+<div class="post-footer-line post-footer-line-1">
+<span class="post-author vcard">
+Posted by
+<span class="fn" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+<meta content="https://www.blogger.com/profile/03379859054257561952" itemprop="url">
+<a class="g-profile" href="https://www.blogger.com/profile/03379859054257561952" rel="author" title="author profile" data-gapiscan="true" data-onload="true" data-gapiattached="true">
+<span itemprop="name">Will Dwinnell</span>
+</a>
+</span>
+</span>
+<span class="post-timestamp">
+at
+<meta content="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html" itemprop="url">
+<a class="timestamp-link" href="./Data Mining in MATLAB_ Principal Components Analysis_files/Data Mining in MATLAB_ Principal Components Analysis.html" rel="bookmark" title="permanent link"><abbr class="published" itemprop="datePublished" title="2010-02-26T07:51:00-05:00">07:51</abbr></a>
+</span>
+<span class="reaction-buttons">
+</span>
+<span class="post-comment-link">
+</span>
+<span class="post-backlinks post-comment-link">
+</span>
+<span class="post-icons">
+<span class="item-action">
+<a href="https://www.blogger.com/email-post.g?blogID=37324607&postID=2511612350739234558" title="Email Post">
+<img alt="" class="icon-action" height="13" src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon18_email.gif" width="18">
+</a>
+</span>
+<span class="item-control blog-admin pid-577198742">
+<a href="https://www.blogger.com/post-edit.g?blogID=37324607&postID=2511612350739234558&from=pencil" title="Edit Post">
+<img alt="" class="icon-action" height="18" src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon18_edit_allbkg.gif" width="18">
+</a>
+</span>
+</span>
+<div class="post-share-buttons goog-inline-block">
+</div>
+</div>
+<div class="post-footer-line post-footer-line-2">
+<span class="post-labels">
+Labels:
+<a href="http://matlabdatamining.blogspot.com/search/label/eigen" rel="tag">eigen</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/eigenfunction" rel="tag">eigenfunction</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/eigenfunctions" rel="tag">eigenfunctions</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/eigenvalue" rel="tag">eigenvalue</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/eigenvalues" rel="tag">eigenvalues</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/PCA" rel="tag">PCA</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/principal%20component" rel="tag">principal component</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/principal%20component%20analysis" rel="tag">principal component analysis</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/principal%20components" rel="tag">principal components</a>,
+<a href="http://matlabdatamining.blogspot.com/search/label/principal%20components%20analysis" rel="tag">principal components analysis</a>
+</span>
+</div>
+<div class="post-footer-line post-footer-line-3">
+<span class="post-location">
+</span>
+</div>
+</div>
+</div>
+<div class="comments" id="comments">
+<a name="comments"></a>
+<h4>54 comments:</h4>
+<div id="Blog1_comments-block-wrapper">
+<dl class="avatar-comment-indent" id="comments-block">
+<dt class="comment-author " id="c8550452525660892328">
+<a name="c8550452525660892328"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-8550452525660892328">
+<p>
+IMO it's hard to give a useful intuitive explanation of PCA without some images of what's going on.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1268968048644#c8550452525660892328" title="comment permalink">
+11:07 PM
+</a>
+<span class="item-control blog-admin pid-2020585093">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=8550452525660892328" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c8800077221046930220">
+<a name="c8800077221046930220"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-8800077221046930220">
+<p>
+Good job.. <br>agree with images examples suggestion..<br><br>How / where on your source code specify the number of features you want to extract from given data? for instance, using PCA to extract top 15 feature.<br><br>Thanks for your help
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1271327756120#c8800077221046930220" title="comment permalink">
+6:35 AM
+</a>
+<span class="item-control blog-admin pid-332871288">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=8800077221046930220" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c2985155493287054662">
+<a name="c2985155493287054662"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/02262558729628205087" rel="nofollow" onclick="" class="avatar-hovercard" id="av-2-02262558729628205087"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Ibraheem">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/02262558729628205087" rel="nofollow">Ibraheem</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-2985155493287054662">
+<p>
+Excellent,<br>I hope you provide same excellent explanation of SVM.<br><br>regards,
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1273007034793#c2985155493287054662" title="comment permalink">
+5:03 PM
+</a>
+<span class="item-control blog-admin pid-663823045">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=2985155493287054662" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c1214031575137922516">
+<a name="c1214031575137922516"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-1214031575137922516">
+<p>
+respected sir,<br>ur blog is very helpful to through this i can understand the beauty for PCA method...but can it apply to image..?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1278146863034#c1214031575137922516" title="comment permalink">
+4:47 AM
+</a>
+<span class="item-control blog-admin pid-1555332269">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=1214031575137922516" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c8397179341359780173">
+<a name="c8397179341359780173"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-8397179341359780173">
+<p>
+I greatly appreciate the practical and clear explanation.  Other things available are beyond my current background, but this explanation allows me to start empirically playing with the method - in my opinion a good precursor to really understanding it formally (if I ever get there! - and if not I still learn something).
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1279926125823#c8397179341359780173" title="comment permalink">
+7:02 PM
+</a>
+<span class="item-control blog-admin pid-261549121">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=8397179341359780173" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c8938820755221826301">
+<a name="c8938820755221826301"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="MP">
+
+</span></div>
+MP
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-8938820755221826301">
+<p>
+The first time I did PCA I used the following document which has pictures. I agree they help a lot. It is nice to see the MatLab code on your blog.  I think it would have been better if you did an example where you actually reduced the dimensionality by selecting a subset of feature vectors. Also it's very easy to do this without the statiscs toolbox.<br><br>I do something like this in MatLab to select my feature vectors<br>Values=diag(Values);<br>[Vsort, Vindices] = sort(-1*Values);<br>Values = Values(Vindices);<br>PC = Vectors(:,Vindices(1:number_factors));<br><br>@previous poster This process can be applied to images for compression.<br><br>http://www.cs.otago.ac.nz/cosc453/student_tutorials/principal_components.pdf
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1280508097766#c8938820755221826301" title="comment permalink">
+12:41 PM
+</a>
+<span class="item-control blog-admin pid-877846977">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=8938820755221826301" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c302081599579598414">
+<a name="c302081599579598414"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/12578687644552369845" rel="nofollow" onclick="" class="avatar-hovercard" id="av-6-12578687644552369845"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Jeremy M. Beaulieu">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/12578687644552369845" rel="nofollow">Jeremy M. Beaulieu</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-302081599579598414">
+<p>
+What do you do if you wanted to know the points that are, say, 1 standard deviations from the mean of the first principal component? In other words, I want to know what is being altered as I move two standard deviations from the first component.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1291147023617#c302081599579598414" title="comment permalink">
+2:57 PM
+</a>
+<span class="item-control blog-admin pid-934430157">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=302081599579598414" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c6415729860614721478">
+<a name="c6415729860614721478"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="nicc">
+
+</span></div>
+nicc
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-6415729860614721478">
+<p>
+Great. Very clear!  I also liked how you offer the non-MATLAB function description.  Good show!
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1291739708493#c6415729860614721478" title="comment permalink">
+11:35 AM
+</a>
+<span class="item-control blog-admin pid-280457165">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=6415729860614721478" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c8167591851346120373">
+<a name="c8167591851346120373"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/02720320564293340939" rel="nofollow" onclick="" class="avatar-hovercard" id="av-8-02720320564293340939"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/fernando-aula.jpg" width="35" height="35" alt="" class="delayLoad" longdesc="http://3.bp.blogspot.com/_a2mKnIa82Nk/SZmXAUKWfSI/AAAAAAAAAI4/X3AGP35-U0w/S45-s35/fernando-aula.jpg" title="Fernando C Barbi">
+
+<noscript>&lt;img src="http://3.bp.blogspot.com/_a2mKnIa82Nk/SZmXAUKWfSI/AAAAAAAAAI4/X3AGP35-U0w/S45-s35/fernando-aula.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/02720320564293340939" rel="nofollow">Fernando C Barbi</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-8167591851346120373">
+<p>
+Will, <br><br>Great Post, thanks! You might want to explicit the relation between V, D, SCORE and COEFF. COEFF is V in descending order and SCORE = B*COEFF.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1294346412332#c8167591851346120373" title="comment permalink">
+3:40 PM
+</a>
+<span class="item-control blog-admin pid-1118003196">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=8167591851346120373" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c8578691520801006606">
+<a name="c8578691520801006606"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/11240044324170144523" rel="nofollow" onclick="" class="avatar-hovercard" id="av-9-11240044324170144523"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Viktor">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/11240044324170144523" rel="nofollow">Viktor</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-8578691520801006606">
+<p>
+https://sites.google.com/site/elsunra/science-fun/science-fun_0-1
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1297590745478#c8578691520801006606" title="comment permalink">
+4:52 AM
+</a>
+<span class="item-control blog-admin pid-802859666">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=8578691520801006606" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c7020772747213138519">
+<a name="c7020772747213138519"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-7020772747213138519">
+<p>
+You said A consists of 3 measurements taken of a particular subject over time. But what in this case COEFF SCORE LATENT? How to use this number for better interpretation of your results?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1302611227698#c7020772747213138519" title="comment permalink">
+8:27 AM
+</a>
+<span class="item-control blog-admin pid-1200177063">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=7020772747213138519" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author blog-author" id="c9038162061629616808">
+<a name="c9038162061629616808"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/03379859054257561952" rel="nofollow" onclick="" class="avatar-hovercard" id="av-11-03379859054257561952"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/Will%252Bportrait%252BMay-09-2010.jpg" width="35" height="35" alt="" class="delayLoad" longdesc="http://3.bp.blogspot.com/_aTiM0lwqgJ4/TQPgL0SeY3I/AAAAAAAAADQ/MyKw_T8tDJE/S45-s35/Will%25252Bportrait%25252BMay-09-2010.jpg" title="Will Dwinnell">
+
+<noscript>&lt;img src="http://3.bp.blogspot.com/_aTiM0lwqgJ4/TQPgL0SeY3I/AAAAAAAAADQ/MyKw_T8tDJE/S45-s35/Will%25252Bportrait%25252BMay-09-2010.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/03379859054257561952" rel="nofollow">Will Dwinnell</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-9038162061629616808">
+<p>
+COEFF is V, but with the opposite order, so that when it is multiplied by the normalized data, B * COEFF, the result, which is generated by princomp() as SCORE, has the first principal component in the first column.  LATENT contains the variances of the principal components.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1302683282840#c9038162061629616808" title="comment permalink">
+4:28 AM
+</a>
+<span class="item-control blog-admin pid-577198742">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=9038162061629616808" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3482899017645590325">
+<a name="c3482899017645590325"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="amin">
+
+</span></div>
+amin
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3482899017645590325">
+<p>
+this articel very helpful for me<br>I am a student from Indonesia<br>I am now more complete thesis on data mining with the PCA as a dimension reduction but I want to use the Jacobi iteration to find the eigen vector<br>Can you help me
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1302789518002#c3482899017645590325" title="comment permalink">
+9:58 AM
+</a>
+<span class="item-control blog-admin pid-729517148">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3482899017645590325" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c5314567281877237650">
+<a name="c5314567281877237650"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/02658015761301413069" rel="nofollow" onclick="" class="avatar-hovercard" id="av-13-02658015761301413069"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="skumar">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/02658015761301413069" rel="nofollow">skumar</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-5314567281877237650">
+<p>
+dear will, thank you for your wonderful explanation on PCA. Can you please explain or help me solve apriori association rule mining using matlab. thanks - s kumar
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1309409329673#c5314567281877237650" title="comment permalink">
+12:48 AM
+</a>
+<span class="item-control blog-admin pid-1506941282">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=5314567281877237650" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3039741422490811788">
+<a name="c3039741422490811788"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/11981594832093869288" rel="nofollow" onclick="" class="avatar-hovercard" id="av-14-11981594832093869288"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Amalina">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/11981594832093869288" rel="nofollow">Amalina</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3039741422490811788">
+<p>
+hi, glad to find this blog! i have a huge set of data: 17689 approximate coefficient which extracted from feature extraction of MRI brain image. how can i use PCA to reduce the data so that i can use a minimum data for SVM classification purpose. really need your advice, tq<br>-amalina_azman_80@yahoo.com.my
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1318497485498#c3039741422490811788" title="comment permalink">
+5:18 AM
+</a>
+<span class="item-control blog-admin pid-1185018190">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3039741422490811788" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c976772702189275144">
+<a name="c976772702189275144"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-976772702189275144">
+<p>
+HI, thanks, how the pca could be used for an image?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1319037671909#c976772702189275144" title="comment permalink">
+11:21 AM
+</a>
+<span class="item-control blog-admin pid-246615133">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=976772702189275144" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c1315568599118892499">
+<a name="c1315568599118892499"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="http://repository.unand.ac.id/view/year/2008.html" rel="nofollow" onclick=""><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="harly">
+
+</a></span></div>
+<a href="http://repository.unand.ac.id/view/year/2008.html" rel="nofollow">harly</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-1315568599118892499">
+<p>
+Thanks for your posting..<br>it's very useful to me..
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1323758997187#c1315568599118892499" title="comment permalink">
+1:49 AM
+</a>
+<span class="item-control blog-admin pid-911980381">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=1315568599118892499" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c4360299956068219494">
+<a name="c4360299956068219494"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/05153971467236769955" rel="nofollow" onclick="" class="avatar-hovercard" id="av-17-05153971467236769955"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Trevor">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/05153971467236769955" rel="nofollow">Trevor</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-4360299956068219494">
+<p>
+If you wanted to find how much each original variable contributed to each of the new variables, how would you do it?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1330404600443#c4360299956068219494" title="comment permalink">
+11:50 PM
+</a>
+<span class="item-control blog-admin pid-966040337">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=4360299956068219494" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c5716668507886519086">
+<a name="c5716668507886519086"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/11407763824274481167" rel="nofollow" onclick="" class="avatar-hovercard" id="av-18-11407763824274481167"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="hari">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/11407763824274481167" rel="nofollow">hari</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-5716668507886519086">
+<p>
+thank you for ur post ....can u please explain how this can be done for color images?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1330448908938#c5716668507886519086" title="comment permalink">
+12:08 PM
+</a>
+<span class="item-control blog-admin pid-1207288385">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=5716668507886519086" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3303568728778992016">
+<a name="c3303568728778992016"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/01173366735789364109" rel="nofollow" onclick="" class="avatar-hovercard" id="av-19-01173366735789364109"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Paco">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/01173366735789364109" rel="nofollow">Paco</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3303568728778992016">
+<p>
+Good post!!<br><br>A question: with this post as starting point, how do you implement rotated PCA with matlab's rotatefactors (varimax algorithm) and the new explained variance based on the rotated components?<br><br>Thanks for your help
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1332496677746#c3303568728778992016" title="comment permalink">
+5:57 AM
+</a>
+<span class="item-control blog-admin pid-144009666">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3303568728778992016" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c8329096652243154860">
+<a name="c8329096652243154860"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-8329096652243154860">
+<p>
+To plot the PC1 vs PC2 plot do I plot the scores first column Vs scores second column of values?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1334383442560#c8329096652243154860" title="comment permalink">
+2:04 AM
+</a>
+<span class="item-control blog-admin pid-1910096937">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=8329096652243154860" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author blog-author" id="c6425369561088123880">
+<a name="c6425369561088123880"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/03379859054257561952" rel="nofollow" onclick="" class="avatar-hovercard" id="av-21-03379859054257561952"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/Will%252Bportrait%252BMay-09-2010.jpg" width="35" height="35" alt="" class="delayLoad" longdesc="http://3.bp.blogspot.com/_aTiM0lwqgJ4/TQPgL0SeY3I/AAAAAAAAADQ/MyKw_T8tDJE/S45-s35/Will%25252Bportrait%25252BMay-09-2010.jpg" title="Will Dwinnell">
+
+<noscript>&lt;img src="http://3.bp.blogspot.com/_aTiM0lwqgJ4/TQPgL0SeY3I/AAAAAAAAADQ/MyKw_T8tDJE/S45-s35/Will%25252Bportrait%25252BMay-09-2010.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/03379859054257561952" rel="nofollow">Will Dwinnell</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-6425369561088123880">
+<p>
+"To plot the PC1 vs PC2 plot do I plot the scores first column Vs scores second column of values?"<br><br>That depends on how the principal components were calculated.  If the <i>princomp</i> function in the Statistics Toolbox was used then, yes.  If the "manual" method I describe here was used, then the order of the principal components column is reversed, so the last 2 columns are the first 2 principal components.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1334394502786#c6425369561088123880" title="comment permalink">
+5:08 AM
+</a>
+<span class="item-control blog-admin pid-577198742">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=6425369561088123880" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c7426575772165225553">
+<a name="c7426575772165225553"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-7426575772165225553">
+<p>
+Will, excellent post. Thanks. Quick question, at the end of the process my new variables will be the matrix SCORE, right? If I want to add trend line I should use the first, second, …columns of SCORE matrix?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1336342483469#c7426575772165225553" title="comment permalink">
+6:14 PM
+</a>
+<span class="item-control blog-admin pid-1904078272">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=7426575772165225553" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c859207002988717526">
+<a name="c859207002988717526"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/06067472434844560455" rel="nofollow" onclick="" class="avatar-hovercard" id="av-23-06067472434844560455"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Kh@L3D">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/06067472434844560455" rel="nofollow">Kh@L3D</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-859207002988717526">
+<p>
+Hello, I'd like to thank you very much for your tutorial. Very helpful and useful.<br>But I do have a question. I read in many works that PCA is used as a "preprocessing" method, prior to classification (LDA or other). Therefor, I'd like to ask you, How can I use the principals coefficients to perform a classification ?<br><br>I mean, okay, I know the assigned classes to the training matrice T, but when I do : Coeff=princomp(A),I found out that I know nothing about Coeff, I don't know its classes. So how can I perform a classification ?<br><br>Thank you very much for your blog. Please, excuse me if my question is misplaced, please indicate me the appropriate forum to ask it.<br><br>Thank you very much :)
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1338061204065#c859207002988717526" title="comment permalink">
+3:40 PM
+</a>
+<span class="item-control blog-admin pid-715514318">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=859207002988717526" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author blog-author" id="c7391559294022711879">
+<a name="c7391559294022711879"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/03379859054257561952" rel="nofollow" onclick="" class="avatar-hovercard" id="av-24-03379859054257561952"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/Will%252Bportrait%252BMay-09-2010.jpg" width="35" height="35" alt="" class="delayLoad" longdesc="http://3.bp.blogspot.com/_aTiM0lwqgJ4/TQPgL0SeY3I/AAAAAAAAADQ/MyKw_T8tDJE/S45-s35/Will%25252Bportrait%25252BMay-09-2010.jpg" title="Will Dwinnell">
+
+<noscript>&lt;img src="http://3.bp.blogspot.com/_aTiM0lwqgJ4/TQPgL0SeY3I/AAAAAAAAADQ/MyKw_T8tDJE/S45-s35/Will%25252Bportrait%25252BMay-09-2010.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/03379859054257561952" rel="nofollow">Will Dwinnell</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-7391559294022711879">
+<p>
+Kh@L3D:<br><br>PCA itself is not a classification method.  PCA merely rearranges the data to exploit linear structure.  As I note in this posting, PCA may or may not help classification, which is a separate process (performed by some classification algorithm: discriminant analysis, neural networks, etc.).
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1338203505781#c7391559294022711879" title="comment permalink">
+7:11 AM
+</a>
+<span class="item-control blog-admin pid-577198742">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=7391559294022711879" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c568430850853779762">
+<a name="c568430850853779762"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-568430850853779762">
+<p>
+Hello! This is one of the best posts I've seen on PCA - thank you! <br>I've used this post as starting point. However for better interpretation of which variables comprise my factors, I would like to go one step further and rotate my factors using the varimax method of rotation.<br>Once I've obtained my COEFF, SCORE, and latent, what is the next step? <br>Thank you~
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1338509915416#c568430850853779762" title="comment permalink">
+8:18 PM
+</a>
+<span class="item-control blog-admin pid-1431044321">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=568430850853779762" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c7016144916569880264">
+<a name="c7016144916569880264"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-7016144916569880264">
+<p>
+Hello! This is one of the best posts I've seen on PCA - thank you! <br>I've used this post as starting point. However for a better interpretation of which variables comprise my factors, I would like to rotate my factors using the varimax method of rotation.<br>My question is, once I've obtained my COEFF, SCORE, and latent, what is the next step to rotation? <br>Thank you~
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1338510001653#c7016144916569880264" title="comment permalink">
+8:20 PM
+</a>
+<span class="item-control blog-admin pid-1431044321">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=7016144916569880264" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c7534997467139819849">
+<a name="c7534997467139819849"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/14508342323065667201" rel="nofollow" onclick="" class="avatar-hovercard" id="av-27-14508342323065667201"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/ghostface.jpg" width="35" height="35" alt="" class="delayLoad" longdesc="http://2.bp.blogspot.com/_cSqkGjZzBcI/S4NFH2ihbYI/AAAAAAAAAEs/88UKPEKfEOA/S45-s35/ghostface.jpg" title="Upul Senanayake">
+
+<noscript>&lt;img src="http://2.bp.blogspot.com/_cSqkGjZzBcI/S4NFH2ihbYI/AAAAAAAAAEs/88UKPEKfEOA/S45-s35/ghostface.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/14508342323065667201" rel="nofollow">Upul Senanayake</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-7534997467139819849">
+<p>
+Hey Will,<br>Your a life saver! Thank you so much!
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1342503666300#c7534997467139819849" title="comment permalink">
+1:41 AM
+</a>
+<span class="item-control blog-admin pid-2009326243">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=7534997467139819849" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3959795850705508826">
+<a name="c3959795850705508826"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Burak">
+
+</span></div>
+Burak
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3959795850705508826">
+<p>
+Thank you very much for your good explanation. I am wondering about one thing though. Once we get the principal components by using the princomp function of matlab, can we say that the first principal component is related to the first column of the original data matrix? Or is it possible that the first column of the original data matrix does not have much variance as the second column; therefore, the first column of the principal components corresponds to the second column of the original data matrix? How can we know which column of the principal components is related to which column of the original data matrix? Thanks in advance.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1343323162484#c3959795850705508826" title="comment permalink">
+1:19 PM
+</a>
+<span class="item-control blog-admin pid-1595260444">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3959795850705508826" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c6846643851087773692">
+<a name="c6846643851087773692"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="http://wwwmath.uni-muenster.de/num/ohlberger/organization/scientific_staff/himpe/" rel="nofollow" onclick=""><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Christian Himpe">
+
+</a></span></div>
+<a href="http://wwwmath.uni-muenster.de/num/ohlberger/organization/scientific_staff/himpe/" rel="nofollow">Christian Himpe</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-6846643851087773692">
+<p>
+Instead of using repmat one can use bsxfun to compute the correlation more efficiently as follows:<br><br>T = bsxfun(@minus,A,mean(A))<br>T = bsxfun(@times,A,1./std(A))<br><br>and since the eigenvalues of a covariance matrix (that by design is positive (semi-)definite) are computed next, one can compute equivalently, but somewhat faster, the singular values:<br><br>D = svd(cov(T))<br><br>Greetings
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1344254953081#c6846643851087773692" title="comment permalink">
+8:09 AM
+</a>
+<span class="item-control blog-admin pid-30668232">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=6846643851087773692" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c4989233830639477084">
+<a name="c4989233830639477084"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/13146283347519456634" rel="nofollow" onclick="" class="avatar-hovercard" id="av-30-13146283347519456634"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="35" height="35" alt="" class="delayLoad" longdesc="//lh5.googleusercontent.com/-2Fhwsa0Yqek/AAAAAAAAAAI/AAAAAAAAADE/L_FCJrfbxDs/s35-c/photo.jpg" title="Nuno Benavente">
+
+<noscript>&lt;img src="//lh5.googleusercontent.com/-2Fhwsa0Yqek/AAAAAAAAAAI/AAAAAAAAADE/L_FCJrfbxDs/s35-c/photo.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/13146283347519456634" rel="nofollow">Nuno Benavente</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-4989233830639477084">
+<p>
+Hi! Lately I've been reading a lot about PCA and I've found this post very useful, kudos to you!<br>I've learned that a useful method for validating a PCA model (choosing how many PCs to retain) is by cross validation.<br>Taking your example in Matlab and applying the 'Leave One Out' method (I really need to implement this in my work) how would you do it?<br>I understand the concept behind CV but I'm a bit confused as how to apply it here (or in any other example), because of my lack of experience.<br>Any help would be MUCH appreciated!<br>Thanks in advance,<br>Nuno B.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1346067394449#c4989233830639477084" title="comment permalink">
+7:36 AM
+</a>
+<span class="item-control blog-admin pid-1364873941">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=4989233830639477084" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c6807561329982666692">
+<a name="c6807561329982666692"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-6807561329982666692">
+<p>
+why there is also a sign problem beside the first-to-last order problem comparing V and COEFF if you compare the last column of V and the first column of COEFF. Which one I should use for the vector? Thanks.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1346950905191#c6807561329982666692" title="comment permalink">
+1:01 PM
+</a>
+<span class="item-control blog-admin pid-242405474">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=6807561329982666692" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c2336215009270600868">
+<a name="c2336215009270600868"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-2336215009270600868">
+<p>
+If possible, I would like to know how to calculate the relation among original variables and the principal components
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1353780881738#c2336215009270600868" title="comment permalink">
+1:14 PM
+</a>
+<span class="item-control blog-admin pid-1176009718">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=2336215009270600868" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c33629861561072824">
+<a name="c33629861561072824"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/12070215867573873336" rel="nofollow" onclick="" class="avatar-hovercard" id="av-33-12070215867573873336"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="alima chaouch">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/12070215867573873336" rel="nofollow">alima chaouch</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-33629861561072824">
+<p>
+how plotting a first score in a two dimensional plane.<br>i have a data set: X=[x1 x2]
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1356025143480#c33629861561072824" title="comment permalink">
+12:39 PM
+</a>
+<span class="item-control blog-admin pid-391634548">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=33629861561072824" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c4576110909964834878">
+<a name="c4576110909964834878"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/12070215867573873336" rel="nofollow" onclick="" class="avatar-hovercard" id="av-34-12070215867573873336"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="alima chaouch">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/12070215867573873336" rel="nofollow">alima chaouch</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-4576110909964834878">
+<p>
+how plotting a first score only .<br>i have a data set X=[x1 x2]
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1356025239790#c4576110909964834878" title="comment permalink">
+12:40 PM
+</a>
+<span class="item-control blog-admin pid-391634548">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=4576110909964834878" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c2931838817344190274">
+<a name="c2931838817344190274"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/00912117655673229832" rel="nofollow" onclick="" class="avatar-hovercard" id="av-35-00912117655673229832"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="elham zamani">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/00912117655673229832" rel="nofollow">elham zamani</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-2931838817344190274">
+<span class="deleted-comment">This comment has been removed by the author.</span>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1366404431563#c2931838817344190274" title="comment permalink">
+4:47 PM
+</a>
+<span class="item-control blog-admin ">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=2931838817344190274" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3070396490352844658">
+<a name="c3070396490352844658"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/00912117655673229832" rel="nofollow" onclick="" class="avatar-hovercard" id="av-36-00912117655673229832"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="elham zamani">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/00912117655673229832" rel="nofollow">elham zamani</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3070396490352844658">
+<p>
+Hi.how can I plot relation between LDA and PCA.Thank you.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1366426988909#c3070396490352844658" title="comment permalink">
+11:03 PM
+</a>
+<span class="item-control blog-admin pid-1037321379">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3070396490352844658" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3159152503082093366">
+<a name="c3159152503082093366"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/15121097471549654640" rel="nofollow" onclick="" class="avatar-hovercard" id="av-37-15121097471549654640"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="tashuhka">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/15121097471549654640" rel="nofollow">tashuhka</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3159152503082093366">
+<p>
+The PC's are orthogonal (V*V.'), but I may say that the transformed data is not always uncorrelated. In case, in the original data, there is one variable that is a linear combination of other variables, this dependence is kept.<br>However, PCA can help us to see these dependencies and eliminate redundant variables.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1375789584557#c3159152503082093366" title="comment permalink">
+7:46 AM
+</a>
+<span class="item-control blog-admin pid-1541168425">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3159152503082093366" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c8093813164765977248">
+<a name="c8093813164765977248"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/05661851598386894447" rel="nofollow" onclick="" class="avatar-hovercard" id="av-38-05661851598386894447"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Isabelle S">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/05661851598386894447" rel="nofollow">Isabelle S</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-8093813164765977248">
+<p>
+Thank you very much for this explanation. I found your page because I've been struggling for a while to understand why the coefficients given by matlab are systematically smaller than those given by Statistica. Today, I've realized that the norms of the factors (columns of COEFF)which should be equal to the factors' variances are instead normalized to one. Do you know why, and more importantly how I can prevent this normalization in order to one to stick to Statistica's results ?<br>Thanks in advance !<br>
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1378799316548#c8093813164765977248" title="comment permalink">
+3:48 AM
+</a>
+<span class="item-control blog-admin pid-215217512">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=8093813164765977248" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c2936572370314349687">
+<a name="c2936572370314349687"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-2936572370314349687">
+<p>
+Super blog post. It helped a lot. <br><br>However, I am trying to get the same results out of MATLAB that a colleague is getting out of SPSS. <br><br>I tried using applying eig to both the covariance matrix (cov) and the corelation matrix (corrcoef) but it results in the same set of eigenvectors. <br><br>I know SPSS has the option to rotatefactors (as does MATLAB of course). But I am talking about the unrotated factors.<br><br>Hope you can help<br><br>Steve Westland<br>University of Leeds<br><br>
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1395309797909#c2936572370314349687" title="comment permalink">
+6:03 AM
+</a>
+<span class="item-control blog-admin pid-765237097">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=2936572370314349687" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c2690787278805881196">
+<a name="c2690787278805881196"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/14356444320625183332" rel="nofollow" onclick="" class="avatar-hovercard" id="av-40-14356444320625183332"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Life">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/14356444320625183332" rel="nofollow">Life</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-2690787278805881196">
+<p>
+Very good and clear, after reading this can understand PCA.<br>How to use PCA to unbalanced data ? 
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1396564658144#c2690787278805881196" title="comment permalink">
+6:37 PM
+</a>
+<span class="item-control blog-admin pid-1919642400">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=2690787278805881196" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c1192234568601543661">
+<a name="c1192234568601543661"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/12718566638338069920" rel="nofollow" onclick="" class="avatar-hovercard" id="av-41-12718566638338069920"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="N P NETHRAVATHI">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/12718566638338069920" rel="nofollow">N P NETHRAVATHI</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-1192234568601543661">
+<p>
+hello please tell me how can use <br>pca for privacy preserving in data mining thank u.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1400038325650#c1192234568601543661" title="comment permalink">
+11:32 PM
+</a>
+<span class="item-control blog-admin pid-594906153">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=1192234568601543661" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3773661661064436065">
+<a name="c3773661661064436065"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/11514746260073858823" rel="nofollow" onclick="" class="avatar-hovercard" id="av-42-11514746260073858823"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="35" height="35" alt="" class="delayLoad" longdesc="//lh4.googleusercontent.com/-K2NoHIrUxZc/AAAAAAAAAAI/AAAAAAAACgo/YJuJdgyrQPw/s35-c/photo.jpg" title="Vincent Spruyt">
+
+<noscript>&lt;img src="//lh4.googleusercontent.com/-K2NoHIrUxZc/AAAAAAAAAAI/AAAAAAAACgo/YJuJdgyrQPw/s35-c/photo.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/11514746260073858823" rel="nofollow">Vincent Spruyt</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3773661661064436065">
+<p>
+Nice post; the examples make it all very clear. I recently wrote an article about what PCA actually means. This might be helpful for some, to get a more intuitive understanding: http://www.visiondummy.com/2014/05/feature-extraction-using-pca/
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1400239467106#c3773661661064436065" title="comment permalink">
+7:24 AM
+</a>
+<span class="item-control blog-admin pid-198319844">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3773661661064436065" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c849874293243899797">
+<a name="c849874293243899797"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Nethravati Ma&amp;#39;m">
+
+</span></div>
+Nethravati Ma'm
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-849874293243899797">
+<p>
+After applying PCA on original and modified data sets, I want to <b>analyse the new data sets for accuracy and information loss &amp; entropy</b>. Any functions or specific codes for the same?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1400659635899#c849874293243899797" title="comment permalink">
+4:07 AM
+</a>
+<span class="item-control blog-admin pid-98497318">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=849874293243899797" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c2233502555387267283">
+<a name="c2233502555387267283"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-2233502555387267283">
+<p>
+If you want to get the original data from B , you do not need COEFF at all. COEFF*COEFF'=identity matrix or 1. I think you should point out that V or COEFF are the eigenvectors of Cov(B). It took me a while to figure out. In this case cov(B) is same as corr(B), as they are zscores. However, B*B' is 14*cov(B). why the 14? it is puzzling me. I was thinking that will give the covariance matrix. 
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1400710351159#c2233502555387267283" title="comment permalink">
+6:12 PM
+</a>
+<span class="item-control blog-admin pid-2070025457">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=2233502555387267283" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3082483717122539541">
+<a name="c3082483717122539541"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3082483717122539541">
+<p>
+Answering post above. B'B is 14 times cov(B) because the covariance estimator is 1/n-1* B'B when E(B)=0 ie series are zero mean. since n=15, n-1 =14. mystery solved. very interesting. covariance esitmator link http://www.encyclopediaofmath.org/index.php/Covariance_matrix
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1400722524959#c3082483717122539541" title="comment permalink">
+9:35 PM
+</a>
+<span class="item-control blog-admin pid-2070025457">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3082483717122539541" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3473993996853739124">
+<a name="c3473993996853739124"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3473993996853739124">
+<p>
+Lets assume you've 3 features of an image instead of 3 measurements taken of a particular subject. I have 10 images.  My training dataset will be 10 x 3; If I use matlab buildin function princomp and get COEFF SCORE LATENT? which one should I use; score also gives me 3 col. Do I need to use first col. only.   How to use this number for better interpretation of my results? how to give input to the classifier
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1405334667113#c3473993996853739124" title="comment permalink">
+6:44 AM
+</a>
+<span class="item-control blog-admin pid-114546088">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3473993996853739124" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3919721060625302905">
+<a name="c3919721060625302905"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="http://www.offshoreindiadataentry.com/data-mining.php" rel="nofollow" onclick=""><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anisha K S">
+
+</a></span></div>
+<a href="http://www.offshoreindiadataentry.com/data-mining.php" rel="nofollow">Anisha K S</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3919721060625302905">
+<p>
+Thanks for sharing this valuable information. I think this PCA method is also helpful for data mining process Containing data compression.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1409115329154#c3919721060625302905" title="comment permalink">
+12:55 AM
+</a>
+<span class="item-control blog-admin pid-1408855599">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3919721060625302905" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c7696896624308542463">
+<a name="c7696896624308542463"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/18444828982623599842" rel="nofollow" onclick="" class="avatar-hovercard" id="av-48-18444828982623599842"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="aaaaaaghhhhhhhhhhhhhhhhh">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/18444828982623599842" rel="nofollow">aaaaaaghhhhhhhhhhhhhhhhh</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-7696896624308542463">
+<p>
+Does the dividing of the data by the standard deviation mess it up? Will it lower the energy of the high variance dimensions and increase the energy of the low variance dimensions
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1412731121587#c7696896624308542463" title="comment permalink">
+9:18 PM
+</a>
+<span class="item-control blog-admin pid-551595426">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=7696896624308542463" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c4443890450507408317">
+<a name="c4443890450507408317"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/16726301179207891280" rel="nofollow" onclick="" class="avatar-hovercard" id="av-49-16726301179207891280"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="35" height="35" alt="" class="delayLoad" longdesc="//lh4.googleusercontent.com/-rfGxQCT6988/AAAAAAAAAAI/AAAAAAAAHKg/PpPScP2lzeQ/s35-c/photo.jpg" title="Christopher Harris">
+
+<noscript>&lt;img src="//lh4.googleusercontent.com/-rfGxQCT6988/AAAAAAAAAAI/AAAAAAAAHKg/PpPScP2lzeQ/s35-c/photo.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/16726301179207891280" rel="nofollow">Christopher Harris</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-4443890450507408317">
+<p>
+Best explanation of PCA on the net! I've been googling it all day.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1418767249529#c4443890450507408317" title="comment permalink">
+5:00 PM
+</a>
+<span class="item-control blog-admin pid-692255050">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=4443890450507408317" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3982152029478300321">
+<a name="c3982152029478300321"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3982152029478300321">
+<p>
+i was searching for 3 months how to use PCA for feature reduction. Thank you for the content.. sdp
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1419528921752#c3982152029478300321" title="comment permalink">
+12:35 PM
+</a>
+<span class="item-control blog-admin pid-595671830">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3982152029478300321" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c991704939124413927">
+<a name="c991704939124413927"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="16" height="16" alt="" title="Anonymous">
+
+</span></div>
+Anonymous
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-991704939124413927">
+<p>
+Hi Will, <br>Nice post to explain PCA. I wonder if you can help my simple problem. I wish to do a GPR with input from PCA of my data, and I learned that the right way to do the CV is by doing PCA on the training set, then use the training regression coefficients to map the test set to their PCs. The following is my attempt in matlab:<br><br>% Calculate xscores for training set     <br>[coef, score, latent, explained, mu] = pca(data_train(:,2:end));<br>xscore_train=score; <br>ytrain=zdata_train(:,1);<br><br>% Calculate xscores for test set=standardized newX * coef<br>xscore_test=zdata_test(:,2:end)*coef; ytest=zdata_test(:,1);<br><br>Do I compute the xscore_test correctly? Also, the scores returned are not standardized correct?<br><br>Thanks a bunch:)
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1428618381977#c991704939124413927" title="comment permalink">
+6:26 PM
+</a>
+<span class="item-control blog-admin pid-1055616199">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=991704939124413927" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c2737755986102115526">
+<a name="c2737755986102115526"></a>
+<div class="avatar-image-container vcard"><span dir="ltr"><a href="https://www.blogger.com/profile/18283210312291269744" rel="nofollow" onclick="" class="avatar-hovercard" id="av-52-18283210312291269744"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.gif" width="35" height="35" alt="" class="delayLoad" longdesc="http://3.bp.blogspot.com/-xXA8Ti2Pvig/UoXSw9GU59I/AAAAAAAABI0/j72KIzfrEyg/s35/check-in-minion.jpg" title="munjal">
+
+<noscript>&lt;img src="http://3.bp.blogspot.com/-xXA8Ti2Pvig/UoXSw9GU59I/AAAAAAAABI0/j72KIzfrEyg/s35/check-in-minion.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span></div>
+<a href="https://www.blogger.com/profile/18283210312291269744" rel="nofollow">munjal</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-2737755986102115526">
+<p>
+Nice article.<br><br>After applying PCA , if I want to take only first component and throw out other 2 components and want to reproduce the original data , then my reproduced data still having three variable. Can you please tell me how this procedure affects my data.<br><br>Or if I want to predict some Y variable based on given data , then how can we use PCA for that ?<br><br>Thank you.
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1433793998997#c2737755986102115526" title="comment permalink">
+4:06 PM
+</a>
+<span class="item-control blog-admin pid-1121406986">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=2737755986102115526" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+<dt class="comment-author " id="c3446151059888141255">
+<a name="c3446151059888141255"></a>
+<div class="avatar-image-container avatar-stock"><span dir="ltr"><a href="https://www.blogger.com/profile/08817686439248454118" rel="nofollow" onclick="" class="avatar-hovercard" id="av-53-08817686439248454118"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/b16-rounded.gif" width="16" height="16" alt="" title="Debasis Jana">
+
+</a></span></div>
+<a href="https://www.blogger.com/profile/08817686439248454118" rel="nofollow">Debasis Jana</a>
+said...
+</dt>
+<dd class="comment-body" id="Blog1_cmt-3446151059888141255">
+<p>
+For a multi variables data sets is it possible to tell which variable have most influence on 1st Principal component. Another question is that what is the significance of the negative sign in the V matrix component?
+</p>
+</dd>
+<dd class="comment-footer">
+<span class="comment-timestamp">
+<a href="http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html?showComment=1441694704726#c3446151059888141255" title="comment permalink">
+2:45 AM
+</a>
+<span class="item-control blog-admin pid-1022161911">
+<a class="comment-delete" href="https://www.blogger.com/delete-comment.g?blogID=37324607&postID=3446151059888141255" title="Delete Comment">
+<img src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon_delete13.gif">
+</a>
+</span>
+</span>
+</dd>
+</dl>
+</div>
+<p class="comment-footer">
+<a href="https://www.blogger.com/comment.g?blogID=37324607&postID=2511612350739234558" onclick="">Post a Comment</a>
+</p>
+<div id="backlinks-container">
+<div id="Blog1_backlinks-container">
+</div>
+</div>
+</div>
+</div>
+
+        </div></div>
+      
+<!-- google_ad_section_end -->
+</div>
+<div class="blog-pager" id="blog-pager">
+<span id="blog-pager-newer-link">
+<a class="blog-pager-newer-link" href="http://matlabdatamining.blogspot.com/2010/02/putting-pca-to-work.html" id="Blog1_blog-pager-newer-link" title="Newer Post">Newer Post</a>
+</span>
+<span id="blog-pager-older-link">
+<a class="blog-pager-older-link" href="http://matlabdatamining.blogspot.com/2010/02/single-neuron-training-delta-rule.html" id="Blog1_blog-pager-older-link" title="Older Post">Older Post</a>
+</span>
+<a class="home-link" href="http://matlabdatamining.blogspot.com/">Home</a>
+</div>
+<div class="clear"></div>
+<div class="post-feeds">
+<div class="feed-links">
+Subscribe to:
+<a class="feed-link" href="http://matlabdatamining.blogspot.com/feeds/2511612350739234558/comments/default" target="_blank" type="application/atom+xml">Post Comments (Atom)</a>
+</div>
+</div>
+<script type="text/javascript">window.___gcfg = {'lang': 'en'};</script>
+</div></div>
+</div>
+</div>
+<div class="column-left-outer">
+<div class="column-left-inner">
+<aside>
+</aside>
+</div>
+</div>
+<div class="column-right-outer">
+<div class="column-right-inner">
+<aside>
+<div class="sidebar section" id="sidebar-right-1"><div class="widget Profile" id="Profile1">
+<h2>About Me</h2>
+<div class="widget-content">
+<a href="https://www.blogger.com/profile/03379859054257561952"><img alt="My Photo" class="profile-img" height="70" src="./Data Mining in MATLAB_ Principal Components Analysis_files/Will+portrait+May-09-2010.jpg" width="80"></a>
+<dl class="profile-datablock">
+<dt class="profile-data">
+<a class="profile-name-link g-profile" href="https://www.blogger.com/profile/03379859054257561952" rel="author" style="background-image: url(//www.blogger.com/img/logo-16.png);" data-gapiscan="true" data-onload="true" data-gapiattached="true">
+Will Dwinnell
+</a>
+</dt>
+<dd class="profile-textblock">I am a data miner with more years of experience than I care to remember.  I've worked in a variety of fields and used a wide array of tools, but MATLAB is my tool of choice.</dd>
+</dl>
+<a class="profile-link" href="https://www.blogger.com/profile/03379859054257561952" rel="author">View my complete profile</a>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=37324607&widgetType=Profile&widgetId=Profile1&action=editWidget&sectionId=sidebar-right-1" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;Profile1&quot;));" target="configProfile1" title="Edit">
+<img alt="" height="18" src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div><div class="widget HTML" id="HTML2">
+<h2 class="title">Visitor Count since Feb-11-2007</h2>
+<div class="widget-content">
+<!-- Start of StatCounter Code -->
+<script type="text/javascript">
+var sc_project=2270623; 
+var sc_invisible=0; 
+var sc_partition=20; 
+var sc_security="5dd933c5"; 
+</script>
+
+<script src="./Data Mining in MATLAB_ Principal Components Analysis_files/counter_xhtml.js" type="text/javascript"></script><span class="statcounter"><a class="statcounter" href="http://www.statcounter.com/" target="_blank"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/t.php" alt="StatCounter - Free Web Tracker and Counter" border="0"></a></span>
+<noscript>&lt;div class="statcounter"&gt;&lt;a class="statcounter" href="http://www.statcounter.com/"&gt;&lt;img alt="web stats analysis" src="http://c21.statcounter.com/2270623/0/5dd933c5/0/" class="statcounter"/&gt;&lt;/a&gt;&lt;/div&gt;</noscript>
+<!-- End of StatCounter Code -->
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=37324607&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar-right-1" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML2&quot;));" target="configHTML2" title="Edit">
+<img alt="" height="18" src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div><div class="widget CustomSearch" id="CustomSearch1">
+<h2 class="title">Search "Data Mining in MATLAB"</h2>
+<div class="widget-content">
+<div id="CustomSearch1_form"><form class="gsc-search-box" accept-charset="utf-8"><table cellspacing="0" cellpadding="0" class="gsc-search-box"><tbody><tr><td class="gsc-input"><input autocomplete="off" type="text" size="10" class=" gsc-input" name="search" title="search"><input type="hidden" name="bgresponse" id="bgresponse"></td><td class="gsc-search-button"><input type="submit" value="Search" class="gsc-search-button" title="search"></td></tr></tbody></table><table cellspacing="0" cellpadding="0" class="gsc-branding"><tbody><tr style="display: none;"><td class="gsc-branding-user-defined"></td><td class="gsc-branding-text"><div class="gsc-branding-text">powered by</div></td><td class="gsc-branding-img-noclear"><img src="./Data Mining in MATLAB_ Principal Components Analysis_files/small-logo.png" class="gsc-branding-img-noclear"></td></tr></tbody></table></form></div>
+</div>
+<style type="text/css">
+      #uds-searchControl .gs-result .gs-title,
+      #uds-searchControl .gs-result .gs-title *,
+      #uds-searchControl .gsc-results .gsc-trailing-more-results,
+      #uds-searchControl .gsc-results .gsc-trailing-more-results * {
+        color:#888888;
+      }
+
+      #uds-searchControl .gs-result .gs-title a:visited,
+      #uds-searchControl .gs-result .gs-title a:visited * {
+        color:#444444;
+      }
+
+      #uds-searchControl .gs-relativePublishedDate,
+      #uds-searchControl .gs-publishedDate {
+        color: #666666;
+      }
+
+      #uds-searchControl .gs-result a.gs-visibleUrl,
+      #uds-searchControl .gs-result .gs-visibleUrl {
+        color: #888888;
+      }
+
+      #uds-searchControl .gsc-results {
+        border-color: #666666;
+        background-color: #141414;
+      }
+
+      #uds-searchControl .gsc-tabhActive {
+        border-color: #666666;
+        border-top-color: #666666;
+        background-color: #141414;
+        color: #ffffff;
+      }
+
+      #uds-searchControl .gsc-tabhInactive {
+        border-color: #666666;
+        background-color: transparent;
+        color: #888888;
+      }
+
+      #uds-searchClearResults {
+        border-color: #666666;
+      }
+
+      #uds-searchClearResults:hover {
+        border-color: #666666;
+      }
+
+      #uds-searchControl .gsc-cursor-page {
+        color: #888888;
+      }
+
+      #uds-searchControl .gsc-cursor-current-page {
+        color: #ffffff;
+      }
+    </style>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=37324607&widgetType=CustomSearch&widgetId=CustomSearch1&action=editWidget&sectionId=sidebar-right-1" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;CustomSearch1&quot;));" target="configCustomSearch1" title="Edit">
+<img alt="" height="18" src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div><div class="widget LinkList" id="LinkList1">
+<h2>Links</h2>
+<div class="widget-content">
+<ul>
+<li><a href="http://matlabdatamining.blogspot.com/feeds/posts/default">RSS Feed for this Web Log</a></li>
+<li><a href="http://abbottanalytics.blogspot.com/">Data Mining and Predictive Analytics</a></li>
+<li><a href="http://blog.georgruss.de/">Data Mining et al - Georg Ruß’ Blog</a></li>
+<li><a href="http://www.mathworks.com/">The MathWorks (MATLAB vendor)</a></li>
+</ul>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=37324607&widgetType=LinkList&widgetId=LinkList1&action=editWidget&sectionId=sidebar-right-1" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;LinkList1&quot;));" target="configLinkList1" title="Edit">
+<img alt="" height="18" src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div><div class="widget BlogArchive" id="BlogArchive1">
+<h2>Blog Archive</h2>
+<div class="widget-content">
+<div id="ArchiveList">
+<div id="BlogArchive1_ArchiveList">
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/search?updated-min=2014-01-01T00:00:00-05:00&updated-max=2015-01-01T00:00:00-05:00&max-results=1">
+2014
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2014_04_01_archive.html">
+April
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/search?updated-min=2013-01-01T00:00:00-05:00&updated-max=2014-01-01T00:00:00-05:00&max-results=2">
+2013
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2013_11_01_archive.html">
+November
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2013_01_01_archive.html">
+January
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/search?updated-min=2012-01-01T00:00:00-05:00&updated-max=2013-01-01T00:00:00-05:00&max-results=1">
+2012
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2012_07_01_archive.html">
+July
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate expanded">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy toggle-open">
+
+        ▼&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/search?updated-min=2010-01-01T00:00:00-05:00&updated-max=2011-01-01T00:00:00-05:00&max-results=5">
+2010
+</a>
+<span class="post-count" dir="ltr">(5)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2010_12_01_archive.html">
+December
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2010_09_01_archive.html">
+September
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate expanded">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy toggle-open">
+
+        ▼&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2010_02_01_archive.html">
+February
+</a>
+<span class="post-count" dir="ltr">(3)</span>
+<ul class="posts">
+<li><a href="http://matlabdatamining.blogspot.com/2010/02/putting-pca-to-work.html">Putting PCA to Work</a></li>
+<li><a href="./Data Mining in MATLAB_ Principal Components Analysis_files/Data Mining in MATLAB_ Principal Components Analysis.html">Principal Components Analysis</a></li>
+<li><a href="http://matlabdatamining.blogspot.com/2010/02/single-neuron-training-delta-rule.html">Single Neuron Training: The Delta Rule</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/search?updated-min=2009-01-01T00:00:00-05:00&updated-max=2010-01-01T00:00:00-05:00&max-results=11">
+2009
+</a>
+<span class="post-count" dir="ltr">(11)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2009_07_01_archive.html">
+July
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2009_04_01_archive.html">
+April
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2009_03_01_archive.html">
+March
+</a>
+<span class="post-count" dir="ltr">(6)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2009_02_01_archive.html">
+February
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/search?updated-min=2008-01-01T00:00:00-05:00&updated-max=2009-01-01T00:00:00-05:00&max-results=11">
+2008
+</a>
+<span class="post-count" dir="ltr">(11)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2008_11_01_archive.html">
+November
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2008_04_01_archive.html">
+April
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2008_03_01_archive.html">
+March
+</a>
+<span class="post-count" dir="ltr">(8)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/search?updated-min=2007-01-01T00:00:00-05:00&updated-max=2008-01-01T00:00:00-05:00&max-results=28">
+2007
+</a>
+<span class="post-count" dir="ltr">(28)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_12_01_archive.html">
+December
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_10_01_archive.html">
+October
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_09_01_archive.html">
+September
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_07_01_archive.html">
+July
+</a>
+<span class="post-count" dir="ltr">(3)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_06_01_archive.html">
+June
+</a>
+<span class="post-count" dir="ltr">(3)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_05_01_archive.html">
+May
+</a>
+<span class="post-count" dir="ltr">(1)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_04_01_archive.html">
+April
+</a>
+<span class="post-count" dir="ltr">(3)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_03_01_archive.html">
+March
+</a>
+<span class="post-count" dir="ltr">(2)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_02_01_archive.html">
+February
+</a>
+<span class="post-count" dir="ltr">(9)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2007_01_01_archive.html">
+January
+</a>
+<span class="post-count" dir="ltr">(4)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/search?updated-min=2006-01-01T00:00:00-05:00&updated-max=2007-01-01T00:00:00-05:00&max-results=13">
+2006
+</a>
+<span class="post-count" dir="ltr">(13)</span>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2006_12_01_archive.html">
+December
+</a>
+<span class="post-count" dir="ltr">(6)</span>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<a class="toggle" href="javascript:void(0)">
+<span class="zippy">
+
+        ►&nbsp;
+      
+</span>
+</a>
+<a class="post-count-link" href="http://matlabdatamining.blogspot.com/2006_11_01_archive.html">
+November
+</a>
+<span class="post-count" dir="ltr">(7)</span>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=37324607&widgetType=BlogArchive&widgetId=BlogArchive1&action=editWidget&sectionId=sidebar-right-1" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;BlogArchive1&quot;));" target="configBlogArchive1" title="Edit">
+<img alt="" height="18" src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+<table border="0" cellpadding="0" cellspacing="0" class="section-columns columns-2">
+<tbody>
+<tr>
+<td class="first columns-cell">
+<div class="sidebar section" id="sidebar-right-2-1"></div>
+</td>
+<td class="columns-cell">
+<div class="sidebar section" id="sidebar-right-2-2"></div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sidebar section" id="sidebar-right-3"></div>
+</aside>
+</div>
+</div>
+</div>
+<div style="clear: both"></div>
+<!-- columns -->
+</div>
+<!-- main -->
+</div>
+</div>
+<div class="main-cap-bottom cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+<footer>
+<div class="footer-outer">
+<div class="footer-cap-top cap-top">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+<div class="fauxborder-left footer-fauxborder-left">
+<div class="fauxborder-right footer-fauxborder-right"></div>
+<div class="region-inner footer-inner">
+<div class="foot section" id="footer-1"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="section-columns columns-2">
+<tbody>
+<tr>
+<td class="first columns-cell">
+<div class="foot section" id="footer-2-1"></div>
+</td>
+<td class="columns-cell">
+<div class="foot section" id="footer-2-2"></div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- outside of the include in order to lock Attribution widget -->
+<div class="foot section" id="footer-3" name="Footer"><div class="widget Attribution" id="Attribution1">
+<div class="widget-content" style="text-align: center;">
+(C)2012 William Dwinnell. Awesome Inc. template. Powered by <a href="https://www.blogger.com/" target="_blank">Blogger</a>.
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=37324607&widgetType=Attribution&widgetId=Attribution1&action=editWidget&sectionId=footer-3" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;Attribution1&quot;));" target="configAttribution1" title="Edit">
+<img alt="" height="18" src="./Data Mining in MATLAB_ Principal Components Analysis_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div></div>
+</div>
+</div>
+<div class="footer-cap-bottom cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+</footer>
+<!-- content -->
+</div>
+</div>
+<div class="content-cap-bottom cap-bottom">
+<div class="cap-left"></div>
+<div class="cap-right"></div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+    window.setTimeout(function() {
+        document.body.className = document.body.className.replace('loading', '');
+      }, 10);
+  </script>
+<script type="text/javascript">
+if (window.jstiming) window.jstiming.load.tick('widgetJsBefore');
+</script><script type="text/javascript" src="./Data Mining in MATLAB_ Principal Components Analysis_files/3141703100-widgets.js"></script>
+<script type="text/javascript" src="./Data Mining in MATLAB_ Principal Components Analysis_files/plusone.js" gapi_processed="true"></script>
+<script type="text/javascript" src="./Data Mining in MATLAB_ Principal Components Analysis_files/jsapi"></script>
+<script type="text/javascript">
+if (typeof(BLOG_attachCsiOnload) != 'undefined' && BLOG_attachCsiOnload != null) { window['blogger_templates_experiment_id'] = "templatesV2";window['blogger_blog_id'] = '37324607';BLOG_attachCsiOnload('item_'); }_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d37324607','//matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html','37324607');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '37324607', 'bloggerUrl': 'https://www.blogger.com', 'title': 'Data Mining in MATLAB', 'pageType': 'item', 'postId': '2511612350739234558', 'url': 'http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html', 'canonicalUrl': 'http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html', 'homepageUrl': 'http://matlabdatamining.blogspot.com/', 'canonicalHomepageUrl': 'http://matlabdatamining.blogspot.com/', 'blogspotFaviconUrl': 'http://matlabdatamining.blogspot.com/favicon.ico', 'enabledCommentProfileImages': true, 'adultContent': false, 'disableAdSenseWidget': false, 'analyticsAccountNumber': '', 'useUniversalAnalytics': false, 'searchLabel': '', 'searchQuery': '', 'pageName': 'Principal Components Analysis', 'pageTitle': 'Data Mining in MATLAB: Principal Components Analysis', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'languageDirection': 'ltr', 'feedLinks': '\74link rel\75\42alternate\42 type\75\42application/atom+xml\42 title\75\42Data Mining in MATLAB - Atom\42 href\75\42http://matlabdatamining.blogspot.com/feeds/posts/default\42 /\76\n\74link rel\75\42alternate\42 type\75\42application/rss+xml\42 title\75\42Data Mining in MATLAB - RSS\42 href\75\42http://matlabdatamining.blogspot.com/feeds/posts/default?alt\75rss\42 /\76\n\74link rel\75\42service.post\42 type\75\42application/atom+xml\42 title\75\42Data Mining in MATLAB - Atom\42 href\75\42https://www.blogger.com/feeds/37324607/posts/default\42 /\76\n\n\74link rel\75\42alternate\42 type\75\42application/atom+xml\42 title\75\42Data Mining in MATLAB - Atom\42 href\75\42http://matlabdatamining.blogspot.com/feeds/2511612350739234558/comments/default\42 /\76\n', 'meTag': '', 'openIdOpTag': '', 'latencyHeadScript': '\74script type\75\42text/javascript\42\76(function() { (function(){function c(a){this.t\75{};this.tick\75function(a,c,b){var d\75void 0!\75b?b:(new Date).getTime();this.t[a]\75[d,c];if(void 0\75\75b)try{window.console.timeStamp(\42CSI/\42+a)}catch(e){}};this.tick(\42start\42,null,a)}var a;window.performance\46\46(a\75window.performance.timing);var h\75a?new c(a.responseStart):new c;window.jstiming\75{Timer:c,load:h};if(a){var b\75a.navigationStart,e\75a.responseStart;0\74b\46\46e\76\75b\46\46(window.jstiming.srt\75e-b)}if(a){var d\75window.jstiming.load;0\74b\46\46e\76\75b\46\46(d.tick(\42_wtsrt\42,void 0,b),d.tick(\42wtsrt_\42,\n\42_wtsrt\42,e),d.tick(\42tbsd_\42,\42wtsrt_\42))}try{a\75null,window.chrome\46\46window.chrome.csi\46\46(a\75Math.floor(window.chrome.csi().pageT),d\46\0460\74b\46\46(d.tick(\42_tbnd\42,void 0,window.chrome.csi().startE),d.tick(\42tbnd_\42,\42_tbnd\42,b))),null\75\75a\46\46window.gtbExternal\46\46(a\75window.gtbExternal.pageT()),null\75\75a\46\46window.external\46\46(a\75window.external.pageT,d\46\0460\74b\46\46(d.tick(\42_tbnd\42,void 0,window.external.startE),d.tick(\42tbnd_\42,\42_tbnd\42,b))),a\46\46(window.jstiming.pt\75a)}catch(k){}})();window.tickAboveFold\75function(c){var a\0750;if(c.offsetParent){do a+\75c.offsetTop;while(c\75c.offsetParent)}c\75a;750\76\75c\46\46window.jstiming.load.tick(\42aft\42)};var f\75!1;function g(){f||(f\75!0,window.jstiming.load.tick(\42firstScrollTime\42))}window.addEventListener?window.addEventListener(\42scroll\42,g,!1):window.attachEvent(\42onscroll\42,g);\n })();\74/script\076', 'mobileHeadScript': '', 'ieCssRetrofitLinks': '\74!--[if IE]\76\74script type\75\42text/javascript\42 src\75\42https://www.blogger.com/static/v1/jsbin/3161104989-ieretrofit.js\42\76\74/script\76\n\74![endif]--\076', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/b4f1c7014987280c', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'sf': 'n', 'tf': ''}}, {'name': 'skin', 'data': {'vars': {'description_font': 'normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif', 'tabs_text_color': '#ffffff', 'widget_link_visited_color': '#444444', 'image_shadow_spread': '0', 'mobile_background_size': 'auto', 'date_background': 'transparent none no-repeat scroll top left', 'image_border_color': 'transparent', 'tabs_border_color': '#222222', 'widget_title_font': 'normal bold 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif', 'body_background_size': 'auto', 'header_padding_top': '22px', 'description_text_color': '#ffffff', 'outer_shadow_spread': '0', 'post_title_font': 'normal bold 22px Arial, Tahoma, Helvetica, FreeSans, sans-serif', 'body_text_color': '#ffffff', 'widget_text_color': '#ffffff', 'header_background_gradient': 'none', 'date_position': 'static', 'image_border_radius': '0', 'tabs_background_color': '#141414', 'date_header_border_radius_top': '0', 'body_background_gradient_cap': 'url(http://www.blogblog.com/1kt/awesomeinc/body_gradient_dark.png)', 'widget_outer_margin_top': '0', 'widget_alternate_text_color': '#666666', 'link_visited_color': '#444444', 'header_margin_top': '0', 'shadow_spread': '0', 'widget_border_bevel_color': '#000000', 'mobile_button_color': '#ffffff', 'tabs_selected_text_color': '#ffffff', 'date_text_color': '#666666', 'post_background_color': '#141414', 'header_margin_bottom': '0', 'widget_padding_side': '15px', 'date_header_position': '15px', 'link_color': '#888888', 'title_shadow_spread': '-1px', 'date_last_space_bottom': '20px', 'widget_border_radius': '0', 'date_space': '30px', 'widget_border_color': '#222222', 'tabs_background_gradient': 'none', 'header_font': 'normal bold 40px Arial, Tahoma, Helvetica, FreeSans, sans-serif', 'widget_padding_top': '8px', 'separator_outdent': '15px', 'startSide': 'left', 'post_border_bevel_color': '#222222', 'feed_link_visited_color': '#444444', 'tabs_font': 'normal bold 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif', 'date_padding_bottom': '0', 'date_border_color': '#222222', 'widget_title_text_color': '#ffffff', 'feed_link_hover_color': '#cccccc', 'widget_link_hover_color': '#cccccc', 'footer_text_color': '#ffffff', 'tabs_selected_background_color': '#444444', 'feed_text_color': '#ffffff', 'date_last_border_radius_bottom': '0', 'post_title_text_color': '#ffffff', 'date_first_border_radius_top': '0', 'endSide': 'right', 'date_side': 'right', 'mobile_background_overlay': 'transparent none repeat scroll top left', 'image_background_color': '#222222', 'post_first_padding_top': '0', 'list_separator_border_size': '1px', 'body_background_color': '#000000', 'header_text_color': '#ffffff', 'pager_border_radius_top': '0', 'post_border_color': '#222222', 'widget_link_color': '#888888', 'widget_background_color': '#141414', 'date_border_size': '0', 'body_font': 'normal normal 13px Arial, Tahoma, Helvetica, FreeSans, sans-serif', 'footer_background_gradient': 'none', 'link_hover_color': '#cccccc', 'header_background_color': 'transparent', 'keycolor': '#ffffff', 'widget_outer_background_gradient': 'none', 'pager_space_top': '1em', 'footer_background_color': '#141414', 'feed_link_color': '#888888', 'widget_font': 'normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif', 'pager_background_color': '#141414', 'title_separator_border_size': '1px', 'date_font': 'normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif', 'widget_outer_background_color': 'transparent'}, 'override': ''}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\75classic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\75flipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\75magazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\75mosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\75sidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\75snapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\75timeslide'}}}]);
+_WidgetManager._RegisterWidget('_NavbarView', new _WidgetInfo('Navbar1', 'navbar', null, document.getElementById('Navbar1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1', 'header', null, document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'main', null, document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/3237253416-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/1185134592-lightbox_bundle.css'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_ProfileView', new _WidgetInfo('Profile1', 'sidebar-right-1', null, document.getElementById('Profile1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML2', 'sidebar-right-1', null, document.getElementById('HTML2'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_CustomSearchView', new _WidgetInfo('CustomSearch1', 'sidebar-right-1', null, document.getElementById('CustomSearch1'), {'title': 'Search \42Data Mining in MATLAB\042', 'includeBlog': true, 'includePostLinks': false, 'includeWeb': false, 'linkLists': [], 'blogUrl': 'http://matlabdatamining.blogspot.com/', 'loadingMsg': 'Loading...', 'thisBlogMsg': 'This Blog', 'linkedFromHereMsg': 'Linked From Here', 'theWebMsg': 'The Web', 'backgroundColor': '#141414', 'textColor': '#ffffff', 'dateColor': '#666666', 'linkColor': '#888888', 'urlColor': '#888888', 'visitedLinkColor': '#444444', 'borderColor': '#666666', 'activeBorderColor': '#666666', 'cse_ua': false}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LinkListView', new _WidgetInfo('LinkList1', 'sidebar-right-1', null, document.getElementById('LinkList1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1', 'sidebar-right-1', null, document.getElementById('BlogArchive1'), {'languageDirection': 'ltr', 'loadingMessage': 'Loading...'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_AttributionView', new _WidgetInfo('Attribution1', 'footer-3', null, document.getElementById('Attribution1'), {'attribution': '(C)2012 William Dwinnell. Awesome Inc. template. Powered by \74a href\75\47https://www.blogger.com\47 target\75\47_blank\47\76Blogger\74/a\76.'}, 'displayModeFull'));
+</script>
+
+<iframe frameborder="0" id="google_top_static_frame" name="google_top_static_frame" src="./Data Mining in MATLAB_ Principal Components Analysis_files/blank.html" style="height: 0px; width: 0px; position: absolute;"></iframe><script id="hiddenlpsubmitdiv" style="display: none;"></script><script>try{for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){ var lastpass_f = document.forms[lastpass_iter]; if(typeof(lastpass_f.lpsubmitorig2)=="undefined"){ lastpass_f.lpsubmitorig2 = lastpass_f.submit; if (typeof(lastpass_f.lpsubmitorig2)=='object'){ continue;}lastpass_f.submit = function(){ var form=this; var customEvent = document.createEvent("Event"); customEvent.initEvent("lpCustomEvent", true, true); var d = document.getElementById("hiddenlpsubmitdiv"); if (d) {for(var i = 0; i < document.forms.length; i++){ if(document.forms[i]==form){ if (typeof(d.innerText) != 'undefined') { d.innerText=i.toString(); } else { d.textContent=i.toString(); } } } d.dispatchEvent(customEvent); }form.lpsubmitorig2(); } } }}catch(e){}</script></body></html>
